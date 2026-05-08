@@ -1,22 +1,17 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { BondData, BondLevel } from "@/lib/types";
-import {
-  addName,
-  cycleBond,
-  editName,
-  loadData,
-  removeName,
-  saveData,
-  setBond,
-} from "@/lib/storage";
+import { useBondData } from "@/lib/hooks/useBondData";
+import { useBondFilter } from "@/lib/hooks/useBondFilter";
 import BondLegend from "@/components/BondLegend";
 import BondFilter from "@/components/BondFilter";
 import NamePanel from "@/components/NamePanel";
 import ConfirmDialog from "@/components/ConfirmDialog";
+import Footer from "@/components/Footer";
 
+// Dynamic imports: both components rely on localStorage / browser APIs and
+// must not run during SSR.
 const BondMatrix = dynamic(() => import("@/components/BondMatrix"), {
   ssr: false,
   loading: () => (
@@ -31,26 +26,14 @@ const MobileView = dynamic(() => import("@/components/MobileView"), {
 });
 
 export default function HomePage() {
-  const [data, setData] = useState<BondData>({
-    version: 1,
-    names: [],
-    bonds: {},
-  });
-  const [hydrated, setHydrated] = useState(false);
+  // ── Data & filter state (all business logic lives in the hooks) ──────────
+  const bondData = useBondData();
+  const bondFilter = useBondFilter();
+
+  // ── UI-only state (layout concerns that don't belong in data hooks) ──────
   const [mobilePanelOpen, setMobilePanelOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  // ConfirmDialog state lives at page level — outside sidebar's transform
-  // stacking context — so position:fixed covers the full viewport correctly.
-  const [pendingRemove, setPendingRemove] = useState<string | null>(null);
-  // Filter state: empty Set = show all; non-empty = show only those levels
-  const [activeFilters, setActiveFilters] = useState<Set<BondLevel>>(new Set());
   const sidebarRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const loaded = loadData();
-    setData(loaded);
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -59,14 +42,11 @@ export default function HomePage() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Close mobile panel on outside tap
+  // Close the mobile panel when the user taps outside it.
   useEffect(() => {
     if (!mobilePanelOpen) return;
     const handler = (e: MouseEvent) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(e.target as Node)
-      ) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target as Node)) {
         setMobilePanelOpen(false);
       }
     };
@@ -74,60 +54,8 @@ export default function HomePage() {
     return () => document.removeEventListener("mousedown", handler);
   }, [mobilePanelOpen]);
 
-  const update = useCallback((next: BondData) => {
-    setData(next);
-    saveData(next);
-  }, []);
-
-  const handleAddName = useCallback(
-    (name: string) => update(addName(data, name)),
-    [data, update]
-  );
-
-  // Does NOT remove immediately — opens the confirmation dialog instead
-  const handleRequestRemoveName = useCallback((name: string) => {
-    setPendingRemove(name);
-  }, []);
-
-  const handleConfirmRemove = useCallback(() => {
-    if (!pendingRemove) return;
-    update(removeName(data, pendingRemove));
-    setPendingRemove(null);
-  }, [data, pendingRemove, update]);
-
-  const handleCancelRemove = useCallback(() => setPendingRemove(null), []);
-
-  const handleToggleFilter = useCallback((level: BondLevel) => {
-    setActiveFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(level)) {
-        next.delete(level);
-      } else {
-        next.add(level);
-      }
-      return next;
-    });
-  }, []);
-
-  const handleEditName = useCallback(
-    (old: string, next: string) => update(editName(data, old, next)),
-    [data, update]
-  );
-  const handleCycleBond = useCallback(
-    (from: string, to: string) => update(cycleBond(data, from, to)),
-    [data, update]
-  );
-  const handleSetBond = useCallback(
-    (from: string, to: string, level: BondLevel) =>
-      update(setBond(data, from, to, level)),
-    [data, update]
-  );
-  const handleImport = useCallback(
-    (imported: BondData) => update(imported),
-    [update]
-  );
-
-  if (!hydrated) {
+  // ── Loading state ────────────────────────────────────────────────────────
+  if (!bondData.hydrated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-5xl animate-pulse">💕</div>
@@ -135,6 +63,11 @@ export default function HomePage() {
     );
   }
 
+  const { data, pendingRemove, confirmRemove, cancelRemove } = bondData;
+  const { activeFilters, toggleFilter, selectAll, clearAll } = bondFilter;
+  const hasEnoughNamesToFilter = data.names.length >= 2;
+
+  // ── Render ───────────────────────────────────────────────────────────────
   return (
     <div
       className="min-h-screen"
@@ -143,20 +76,18 @@ export default function HomePage() {
           "linear-gradient(135deg, #fef9f0 0%, #fdf2f8 50%, #f0fdf4 100%)",
       }}
     >
-      {/*
-        ConfirmDialog is rendered here — at the top of the page tree,
-        outside any sidebar element that has CSS transform applied.
-        This ensures position:fixed covers the full document viewport.
-      */}
+      {/* ConfirmDialog is rendered at the page root — outside any sidebar
+          element with a CSS transform — so position:fixed covers the full
+          viewport and is never clipped by a transform stacking context. */}
       {pendingRemove && (
         <ConfirmDialog
           name={pendingRemove}
-          onConfirm={handleConfirmRemove}
-          onCancel={handleCancelRemove}
+          onConfirm={confirmRemove}
+          onCancel={cancelRemove}
         />
       )}
 
-      {/* ── Sticky Menu Bar ─────────────────────────────────────── */}
+      {/* ── Sticky header / menu bar ────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
           <div className="flex items-center flex-shrink-0">
@@ -178,23 +109,18 @@ export default function HomePage() {
             </h1>
           </div>
 
-          {/* Legend — desktop centre */}
           <div className="hidden lg:flex flex-1 justify-center">
             <BondLegend />
           </div>
 
-          {/* Right controls */}
           <div className="flex items-center gap-2 flex-shrink-0">
             {data.names.length > 0 && (
               <span className="hidden sm:flex items-center gap-1 text-xs text-gray-500 bg-white rounded-full px-2.5 py-1 border border-gray-200">
                 <span>👥</span>
-                <span className="font-bold text-gray-700">
-                  {data.names.length}
-                </span>{" "}
+                <span className="font-bold text-gray-700">{data.names.length}</span>{" "}
                 people
               </span>
             )}
-            {/* Mobile panel toggle — header button */}
             <button
               onClick={() => setMobilePanelOpen((v) => !v)}
               className="md:hidden btn-secondary flex items-center gap-1.5 text-sm"
@@ -212,30 +138,29 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Legend bar for mobile/tablet */}
+      {/* Legend bar (mobile / tablet only) */}
       <div className="lg:hidden px-4 py-2 overflow-x-auto">
         <BondLegend />
       </div>
 
-      {/* ── Page body ──────────────────────────────────────────── */}
+      {/* ── Page body ───────────────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto flex relative">
-
-        {/* Matrix or mobile card view */}
         <main className="flex-1 p-4 min-w-0">
           {isMobile ? (
             <>
-              {data.names.length >= 2 && (
+              {hasEnoughNamesToFilter && (
                 <div className="mb-3 bg-white/60 rounded-xl px-3 py-2 border border-gray-100">
                   <BondFilter
                     activeFilters={activeFilters}
-                    onToggle={handleToggleFilter}
+                    onToggle={toggleFilter}
+                    onSelectAll={selectAll}
+                    onClearAll={clearAll}
                   />
                 </div>
               )}
               <MobileView
                 data={data}
-                onCycleBond={handleCycleBond}
-                onSetBond={handleSetBond}
+                onSetBond={bondData.setBond}
                 activeFilters={activeFilters}
               />
             </>
@@ -248,38 +173,35 @@ export default function HomePage() {
                 >
                   Bond Matrix
                 </h2>
-                {data.names.length >= 2 && (
+                {hasEnoughNamesToFilter && (
                   <p className="text-xs text-gray-400 mt-0.5">
                     {data.names.length}×{data.names.length} grid ·{" "}
                     {data.names.length * (data.names.length - 1)} bonds tracked
                   </p>
                 )}
               </div>
-              {/* Filter bar — visible whenever there are enough names to show bonds */}
-              {data.names.length >= 2 && (
+              {hasEnoughNamesToFilter && (
                 <div className="mb-3 bg-white/60 rounded-xl px-3 py-2 border border-gray-100">
                   <BondFilter
                     activeFilters={activeFilters}
-                    onToggle={handleToggleFilter}
+                    onToggle={toggleFilter}
+                    onSelectAll={selectAll}
+                    onClearAll={clearAll}
                   />
                 </div>
               )}
               <BondMatrix
                 data={data}
-                onCycleBond={handleCycleBond}
-                onSetBond={handleSetBond}
+                onCycleBond={bondData.cycleBond}
+                onSetBond={bondData.setBond}
                 activeFilters={activeFilters}
               />
             </>
           )}
         </main>
 
-        {/*
-          Desktop sidebar — always visible, no toggle required.
-          Uses sticky positioning relative to the page, not fixed,
-          so it stays in the layout flow and never interferes with
-          the ConfirmDialog's fixed positioning.
-        */}
+        {/* Desktop sidebar — always visible, in-flow (not fixed), so it never
+            interferes with the ConfirmDialog's fixed positioning. */}
         {!isMobile && (
           <aside className="flex-shrink-0 w-72 lg:w-80 border-l border-gray-100 bg-white/40">
             <div
@@ -294,10 +216,10 @@ export default function HomePage() {
               </h2>
               <NamePanel
                 data={data}
-                onAddName={handleAddName}
-                onRemoveName={handleRequestRemoveName}
-                onEditName={handleEditName}
-                onImport={handleImport}
+                onAddName={bondData.addName}
+                onRemoveName={bondData.requestRemoveName}
+                onEditName={bondData.editName}
+                onImport={bondData.importBondData}
               />
             </div>
           </aside>
@@ -342,10 +264,10 @@ export default function HomePage() {
                 </div>
                 <NamePanel
                   data={data}
-                  onAddName={handleAddName}
-                  onRemoveName={handleRequestRemoveName}
-                  onEditName={handleEditName}
-                  onImport={handleImport}
+                  onAddName={bondData.addName}
+                  onRemoveName={bondData.requestRemoveName}
+                  onEditName={bondData.editName}
+                  onImport={bondData.importBondData}
                 />
               </div>
             </aside>
@@ -353,16 +275,19 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* Mobile FAB */}
+      {/* Scroll-to-Top FAB — mobile only, hidden while the panel is open
+          so it doesn't render above the backdrop. */}
       {isMobile && !mobilePanelOpen && (
         <button
           className="btn-primary fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-xl shadow-lg"
-          onClick={() => setMobilePanelOpen(true)}
-          aria-label="Manage people"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Scroll to top"
         >
-          👥
+          ↑
         </button>
       )}
+
+      <Footer />
     </div>
   );
 }

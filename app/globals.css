@@ -11,6 +11,8 @@
   --bond-1: #bbf7d0;
   --bond-2: #fef08a;
   --bond-3: #fecdd3;
+  --bond-4: #ffb347;
+  --bond-5: #c3b1e1;
 }
 
 html,
@@ -47,6 +49,18 @@ body {
   background-color: var(--bond-3);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Ctext y='10' font-size='9' fill='rgba(190,18,60,0.25)'%3E♥%3C/text%3E%3C/svg%3E");
   background-size: 12px 12px;
+}
+
+.bond-cell-4 {
+  background-color: var(--bond-4);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ctext y='12' font-size='10' fill='rgba(180,70,0,0.22)'%3E⌂%3C/text%3E%3C/svg%3E");
+  background-size: 14px 14px;
+}
+
+.bond-cell-5 {
+  background-color: var(--bond-5);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ctext y='12' font-size='10' fill='rgba(88,28,135,0.2)'%3E→%3C/text%3E%3C/svg%3E");
+  background-size: 14px 14px;
 }
 
 /* ──────────────────────────────────────────

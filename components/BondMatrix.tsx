@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
-import { BondData, BondLevel, BOND_CONFIG } from "@/lib/types";
+import { BondData, BondLevel, BOND_CONFIG, ALL_BOND_LEVELS } from "@/lib/types";
 
 interface BondMatrixProps {
   data: BondData;
@@ -40,26 +40,22 @@ export default function BondMatrix({
     [onCycleBond]
   );
 
-  const handleCellLongPress = useCallback(
-    (from: string, to: string, e: React.MouseEvent | React.TouchEvent) => {
+  const startLongPress = (
+    from: string,
+    to: string,
+    e: React.MouseEvent | React.TouchEvent
+  ) => {
+    // Capture the rect immediately — SyntheticEvent.currentTarget becomes null
+    // after the event handler returns (React event pooling), so we cannot read it
+    // inside the setTimeout callback 400ms later.
       const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    longPressTimer.current = setTimeout(() => {
       setPicker({
         from,
         to,
         x: rect.left + rect.width / 2,
         y: rect.top - 8,
       });
-    },
-    []
-  );
-
-  const startLongPress = (
-    from: string,
-    to: string,
-    e: React.MouseEvent | React.TouchEvent
-  ) => {
-    longPressTimer.current = setTimeout(() => {
-      handleCellLongPress(from, to, e);
     }, 400);
   };
 
@@ -78,7 +74,7 @@ export default function BondMatrix({
           No names yet!
         </h3>
         <p className="text-sm text-gray-400">
-          Add some Tomadachis to get started!
+          Add Tomadachis in the panel to get started.
         </p>
       </div>
     );
@@ -95,7 +91,7 @@ export default function BondMatrix({
           Add one more Tomadachi!
         </h3>
         <p className="text-sm text-gray-400">
-          You need at least 2 names to track bonds.
+          You need at least 2 Tomadachis to track bonds.
         </p>
       </div>
     );
@@ -115,14 +111,15 @@ export default function BondMatrix({
         >
           <div
             ref={pickerRef}
-            className="absolute bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 flex gap-1"
+            className="absolute bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 flex gap-1 flex-wrap"
             style={{
-              left: Math.min(picker.x - 96, window.innerWidth - 208),
+              left: Math.min(picker.x - 155, window.innerWidth - 320),
               top: Math.max(picker.y - 64, 8),
+              maxWidth: 320,
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {([0, 1, 2, 3] as BondLevel[]).map((level) => {
+            {ALL_BOND_LEVELS.map((level) => {
               const cfg = BOND_CONFIG[level];
               const isCurrent = (bonds[picker.from]?.[picker.to] ?? 0) === level;
               return (

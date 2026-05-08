@@ -1,17 +1,23 @@
 "use client";
 
 import React from "react";
-import { BondLevel, BOND_CONFIG } from "@/lib/types";
+import { BondLevel, BOND_CONFIG, ALL_BOND_LEVELS } from "@/lib/types";
 
 interface BondFilterProps {
   activeFilters: Set<BondLevel>;
   onToggle: (level: BondLevel) => void;
+  onSelectAll: () => void;
+  onClearAll: () => void;
 }
 
-const LEVELS = [0, 1, 2, 3] as BondLevel[];
-
-export default function BondFilter({ activeFilters, onToggle }: BondFilterProps) {
+export default function BondFilter({
+  activeFilters,
+  onToggle,
+  onSelectAll,
+  onClearAll,
+}: BondFilterProps) {
   const hasActive = activeFilters.size > 0;
+  const allSelected = activeFilters.size === ALL_BOND_LEVELS.length;
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -22,7 +28,7 @@ export default function BondFilter({ activeFilters, onToggle }: BondFilterProps)
         Filter:
       </span>
 
-      {LEVELS.map((level) => {
+      {ALL_BOND_LEVELS.map((level) => {
         const cfg = BOND_CONFIG[level];
         const isActive = activeFilters.has(level);
 
@@ -47,11 +53,21 @@ export default function BondFilter({ activeFilters, onToggle }: BondFilterProps)
         );
       })}
 
-      {/* Clear button — only shown when at least one filter is active */}
+      {/* Select All — always visible */}
+      <button
+        onClick={onSelectAll}
+        disabled={allSelected}
+        className="text-xs text-indigo-500 hover:text-indigo-700 underline underline-offset-2 transition-colors ml-1 disabled:opacity-40 disabled:cursor-default"
+        title="Select all bond types"
+      >
+        Select All
+      </button>
+
+      {/* Clear — only shown when at least one filter is active */}
       {hasActive && (
         <button
-          onClick={() => LEVELS.forEach((l) => activeFilters.has(l) && onToggle(l))}
-          className="text-xs text-gray-400 hover:text-gray-600 underline underline-offset-2 transition-colors ml-1"
+          onClick={onClearAll}
+          className="text-xs text-gray-400 hover:text-gray-600 underline underline-offset-2 transition-colors"
           title="Clear all filters"
         >
           Clear
@@ -59,8 +75,8 @@ export default function BondFilter({ activeFilters, onToggle }: BondFilterProps)
       )}
 
       {hasActive && (
-        <span className="text-xs text-gray-400 ml-0.5">
-          — showing {activeFilters.size} type{activeFilters.size > 1 ? "s" : ""}
+        <span className="text-xs text-gray-400">
+          — {activeFilters.size} of {ALL_BOND_LEVELS.length} shown
         </span>
       )}
     </div>

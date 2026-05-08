@@ -2,26 +2,26 @@
 
 import React, { useState } from "react";
 import { BondData, BondLevel, BOND_CONFIG } from "@/lib/types";
+import BondCard from "@/components/BondCard";
 
 interface MobileViewProps {
   data: BondData;
-  onCycleBond: (from: string, to: string) => void;
   onSetBond: (from: string, to: string, level: BondLevel) => void;
-  // Empty set means no filter (show all). Non-empty means show only matching cards.
+  /** Empty set = show all. Non-empty = show only matching bond types. */
   activeFilters: Set<BondLevel>;
 }
 
+/** null = ALL mode (every unique pair). string = person mode (bonds from that person). */
+type PersonSelection = string | null;
+
 export default function MobileView({
   data,
-  onCycleBond,
   onSetBond,
   activeFilters,
 }: MobileViewProps) {
   const { names, bonds } = data;
-  const [activePerson, setActivePerson] = useState<string | null>(
-    names[0] ?? null
-  );
-  const [pickerCell, setPickerCell] = useState<{ from: string; to: string } | null>(null);
+  const [activePerson, setActivePerson] = useState<PersonSelection>(null);
+  const [openPickerKey, setOpenPickerKey] = useState<string | null>(null);
 
   if (names.length === 0) {
     return (
@@ -33,30 +33,75 @@ export default function MobileView({
         >
           No names yet!
         </h3>
-        <p className="text-sm text-gray-400">
-          Tap the panel icon to add people.
-        </p>
+        <p className="text-sm text-gray-400">Tap the panel icon to add Tomadachis.</p>
       </div>
     );
   }
 
-  // Ensure active person is still valid
-  const currentPerson =
-    activePerson && names.includes(activePerson) ? activePerson : names[0];
+  // If the stored activePerson was removed, fall back to ALL mode.
+  const currentPerson: PersonSelection =
+    activePerson !== null && names.includes(activePerson) ? activePerson : null;
 
-  const bonds_for_person = names
+  // ── Bond lists ────────────────────────────────────────────────────────────
+
+  // ALL mode: deduplicated pairs (i < j by insertion order) with filter applied.
+  const allPairBonds: { from: string; to: string; level: BondLevel }[] = [];
+  for (let i = 0; i < names.length; i++) {
+    for (let j = i + 1; j < names.length; j++) {
+      const from = names[i];
+      const to = names[j];
+      const level = (bonds[from]?.[to] ?? 0) as BondLevel;
+      if (activeFilters.size === 0 || activeFilters.has(level)) {
+        allPairBonds.push({ from, to, level });
+      }
+    }
+  }
+
+  // Person mode: bonds from currentPerson to everyone else, with filter applied.
+  const personBonds =
+    currentPerson !== null
+      ? names
     .filter((n) => n !== currentPerson)
-    .map((toName) => ({
-      toName,
-      level: (bonds[currentPerson]?.[toName] ?? 0) as BondLevel,
-      reverseLevel: (bonds[toName]?.[currentPerson] ?? 0) as BondLevel,
+          .map((to) => ({
+            to,
+            level: (bonds[currentPerson]?.[to] ?? 0) as BondLevel,
+            reverseLevel: (bonds[to]?.[currentPerson] ?? 0) as BondLevel,
     }))
-    .filter(({ level }) =>
-      activeFilters.size === 0 || activeFilters.has(level)
-    );
+          .filter(
+            ({ level }) => activeFilters.size === 0 || activeFilters.has(level)
+          )
+      : [];
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  function pairKey(from: string, to: string) {
+    return `${from}↔${to}`;
+  }
+
+  function personKey(to: string) {
+    return `${currentPerson}→${to}`;
+  }
+
+  function togglePicker(key: string) {
+    setOpenPickerKey((prev) => (prev === key ? null : key));
+  }
+
+  function handleSetBond(from: string, to: string, level: BondLevel) {
+    onSetBond(from, to, level);
+    setOpenPickerKey(null);
+  }
+
+  function handleSelectPerson(name: string | null) {
+    setActivePerson(name);
+    setOpenPickerKey(null);
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col gap-4">
+    // pb-24 (~96px) ensures the fixed Scroll-to-Top FAB never overlaps the last card.
+    <div className="flex flex-col gap-4 pb-24">
+
       {/* Person selector */}
       <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
         <p
@@ -66,126 +111,84 @@ export default function MobileView({
           View bonds from:
         </p>
         <div className="flex flex-wrap gap-1.5">
+          <PersonButton
+            label="ALL"
+            isActive={currentPerson === null}
+            onClick={() => handleSelectPerson(null)}
+          />
           {names.map((name) => (
-            <button
+            <PersonButton
               key={name}
-              onClick={() => setActivePerson(name)}
-              className={`
-                text-sm px-3 py-1.5 rounded-xl font-semibold transition-all
-                ${currentPerson === name
-                  ? "bg-rose-500 text-white shadow-sm"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }
-              `}
-            >
-              {name}
-            </button>
+              label={name}
+              isActive={currentPerson === name}
+              onClick={() => handleSelectPerson(name)}
+            />
           ))}
         </div>
       </div>
 
       {/* Bond cards */}
       {names.length < 2 ? (
-        <div className="text-center py-8 text-gray-400 text-sm">
-          Add more people to see bonds.
+        <EmptyState message="Add more Tomadachis to see bonds." />
+      ) : currentPerson === null ? (
+        /* ALL mode */
+        <div className="flex flex-col gap-2">
+          <SectionLabel>
+            All bonds ({allPairBonds.length} pair{allPairBonds.length !== 1 ? "s" : ""})
+          </SectionLabel>
+          {allPairBonds.length === 0 ? (
+            <EmptyState
+              message={
+                activeFilters.size > 0
+                  ? "No bonds of the selected type found."
+                  : "Add more Tomadachis to see bonds."
+              }
+            />
+          ) : (
+            allPairBonds.map(({ from, to, level }) => {
+              const key = pairKey(from, to);
+              return (
+                <BondCard
+                  key={key}
+                  from={from}
+                  to={to}
+                  displayMode="pair"
+                  level={level}
+                  isPickerOpen={openPickerKey === key}
+                  onTogglePicker={() => togglePicker(key)}
+                  onSetBond={handleSetBond}
+                />
+              );
+            })
+          )}
         </div>
       ) : (
+        /* Person mode */
         <div className="flex flex-col gap-2">
-          <p
-            className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-1"
-            style={{ fontFamily: "Fredoka" }}
-          >
-            {currentPerson}&apos;s bonds
-          </p>
-
-          {bonds_for_person.length === 0 ? (
-            <div className="text-center py-8 text-gray-400 text-sm">
-              {activeFilters.size > 0
+          <SectionLabel>{currentPerson}&apos;s bonds</SectionLabel>
+          {personBonds.length === 0 ? (
+            <EmptyState
+              message={
+                activeFilters.size > 0
                 ? `No bonds of the selected type for ${currentPerson}.`
-                : "Add more people to see bonds."}
-            </div>
+                  : "Add more Tomadachis to see bonds."
+              }
+            />
           ) : (
-            bonds_for_person.map(({ toName, level, reverseLevel }) => {
-              const cfg = BOND_CONFIG[level];
-              const revCfg = BOND_CONFIG[reverseLevel];
-              const isPickerOpen =
-                pickerCell?.from === currentPerson &&
-                pickerCell?.to === toName;
-
+            personBonds.map(({ to, level, reverseLevel }) => {
+              const key = personKey(to);
               return (
-                <div
-                  key={toName}
-                  className="mobile-card"
-                >
-                  <div className="flex items-center gap-3 px-4 py-3">
-                    {/* Name */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-lg font-bold text-gray-800 truncate">
-                        {toName}
-                      </p>
-                      {/* For possibly adding in different level bonds later */}
-                      {/* <p className="text-xs text-gray-400 mt-0.5">
-                        Seen as:{" "}
-                        <span
-                          className={`font-semibold ${revCfg.textClass.replace("bg-", "")}`}
-                          style={{ color: getTextColor(reverseLevel) }}
-                        >
-                          {revCfg.label}
-                        </span>
-                      </p> */}
-                    </div>
-
-                    {/* Current level display */}
-                    <div
-                      className={`bond-cell-${level} rounded-xl px-3 py-2 flex items-center gap-1.5 cursor-pointer flex-shrink-0`}
-                      onClick={() => {
-                        setPickerCell(
-                          isPickerOpen ? null : { from: currentPerson, to: toName }
-                        );
-                      }}
-                    >
-                      <span className={`text-base ${cfg.textClass}`}>
-                        {cfg.symbol}
-                      </span>
-                      <span className={`text-xs font-bold ${cfg.textClass}`}>
-                        {cfg.label}
-                      </span>
-                      <span className="text-xs text-gray-400 ml-0.5">▾</span>
-                    </div>
-                  </div>
-
-                  {/* Inline picker */}
-                  {isPickerOpen && (
-                    <div className="border-t border-gray-100 px-3 py-3 flex gap-2 animate-slide-in">
-                      {([0, 1, 2, 3] as BondLevel[]).map((lvl) => {
-                        const lcfg = BOND_CONFIG[lvl];
-                        return (
-                          <button
-                            key={lvl}
-                            onClick={() => {
-                              onSetBond(currentPerson, toName, lvl);
-                              setPickerCell(null);
-                            }}
-                            className={`
-                              flex-1 flex flex-col items-center py-2.5 rounded-xl text-sm
-                              bond-cell-${lvl} transition-all
-                              ${level === lvl ? "ring-2 ring-gray-500 scale-105" : "hover:scale-105"}
-                            `}
-                          >
-                            <span className={`text-base ${lcfg.textClass}`}>
-                              {lcfg.symbol}
-                            </span>
-                            <span
-                              className={`text-[10px] font-bold mt-0.5 ${lcfg.textClass}`}
-                            >
-                              {lcfg.label.slice(0, 6)}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                <BondCard
+                  key={key}
+                  from={currentPerson}
+                  to={to}
+                  displayMode="target"
+                  level={level}
+                  reverseLevel={reverseLevel}
+                  isPickerOpen={openPickerKey === key}
+                  onTogglePicker={() => togglePicker(key)}
+                  onSetBond={handleSetBond}
+                />
               );
             })
           )}
@@ -195,12 +198,49 @@ export default function MobileView({
   );
 }
 
-function getTextColor(level: BondLevel): string {
-  const colors: Record<BondLevel, string> = {
-    0: "#6B7280",
-    1: "#047857",
-    2: "#854D0E",
-    3: "#9F1239",
-  };
-  return colors[level];
+// ─────────────────────────────────────────────────────────────────────────────
+// Small focused sub-components — keeps MobileView's JSX scannable
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PersonButton({
+  label,
+  isActive,
+  onClick,
+}: {
+  label: string;
+  isActive: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={isActive}
+      className={`
+        text-sm px-3 py-1.5 rounded-xl font-semibold transition-all
+        ${isActive
+          ? "bg-rose-500 text-white shadow-sm"
+          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+        }
+      `}
+    >
+      {label}
+    </button>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-1"
+      style={{ fontFamily: "Fredoka" }}
+    >
+      {children}
+    </p>
+  );
+}
+
+function EmptyState({ message }: { message: string }) {
+  return (
+    <div className="text-center py-8 text-gray-400 text-sm">{message}</div>
+  );
 }

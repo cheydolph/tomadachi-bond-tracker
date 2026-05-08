@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { BOND_CONFIG, BondLevel } from "@/lib/types";
+import { BOND_CONFIG, ALL_BOND_LEVELS } from "@/lib/types";
 
 export default function BondLegend() {
   return (
     <div className="flex flex-wrap gap-2 items-center">
-      {([0, 1, 2, 3] as BondLevel[]).map((level) => {
+      {ALL_BOND_LEVELS.map((level) => {
         const cfg = BOND_CONFIG[level];
         return (
           <div
@@ -22,7 +22,7 @@ export default function BondLegend() {
         );
       })}
       <span className="text-xs text-gray-400 ml-1">
-        · Click to cycle / choose between bond options
+        · Click to cycle OR Long-press to pick
       </span>
     </div>
   );
