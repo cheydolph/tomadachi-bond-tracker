@@ -88,37 +88,30 @@ export default function HomePage() {
       )}
 
       {/* ── Sticky header / menu bar ────────────────────────────── */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      <header className="sticky top-0 z-40 bg-yellow-300 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
-          <div className="flex items-center flex-shrink-0">
+          <div className="flex items-center flex-shrink-0 ring-2 ring-offset-0 ring-yellow-300 rounded-xl">
             <img
-              src="/tbt.png"
+              src="/tdbt_banner.png"
               alt="Tomadachi Bond Tracker"
               width={140}
-              height={36}
-              style={{ height: "36px", width: "auto", maxWidth: "140px", objectFit: "contain" }}
+              height={45}
+              style={{ 
+                height: "45px", 
+                maxHeight: "50px",
+                width: "auto", 
+                objectFit: "contain",
+                borderRadius: "10px"
+                }}
             />
-            <h1
-              className="text-xl font-bold text-gray-800 ml-1"
-              style={{ fontFamily: "Fredoka" }}
-            >
-              Tomadachi
-              <span className="text-rose-400 ml-2 font-normal text-base sm:inline">
-                Bond Tracker
-              </span>
-            </h1>
-          </div>
-
-          <div className="hidden lg:flex flex-1 justify-center">
-            <BondLegend />
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
             {data.names.length > 0 && (
-              <span className="hidden sm:flex items-center gap-1 text-xs text-gray-500 bg-white rounded-full px-2.5 py-1 border border-gray-200">
+              <span className="hidden sm:flex items-center gap-1 text-base text-gray-500 bg-white rounded-full px-2.5 py-1 border border-gray-200">
                 <span>👥</span>
                 <span className="font-bold text-gray-700">{data.names.length}</span>{" "}
-                people
+                Miis
               </span>
             )}
             <button
@@ -145,7 +138,7 @@ export default function HomePage() {
 
       {/* ── Page body ───────────────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto flex relative">
-        <main className="flex-1 p-4 min-w-0">
+        <main className="flex-1 px-4 py-1 min-w-0">
           {isMobile ? (
             <>
               {hasEnoughNamesToFilter && (
@@ -217,7 +210,7 @@ export default function HomePage() {
                 className="text-base font-semibold text-gray-600 mb-4 flex items-center gap-2"
                 style={{ fontFamily: "Fredoka" }}
               >
-                <span>👥</span> Manage People
+                <span>👥</span> Manage Miis
               </h2>
               <NamePanel
                 data={data}
@@ -257,7 +250,7 @@ export default function HomePage() {
                     className="text-base font-semibold text-gray-700"
                     style={{ fontFamily: "Fredoka" }}
                   >
-                    Manage People
+                    Manage Miis
                   </h2>
                   <button
                     onClick={() => setMobilePanelOpen(false)}

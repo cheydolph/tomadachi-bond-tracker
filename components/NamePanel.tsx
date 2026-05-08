@@ -107,18 +107,18 @@ export default function NamePanel({
   return (
     <div className="flex flex-col gap-4">
       {/* Add Tomadachi */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+      <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
         <h2
           className="text-base font-semibold text-gray-700 mb-3"
           style={{ fontFamily: "Fredoka" }}
         >
-          Add Tomadachi
+          Add Mii
         </h2>
         <div className="flex gap-2">
           <input
             className="input-field"
             type="text"
-            placeholder="Enter a name…"
+            placeholder="Enter a Mii…"
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
@@ -141,24 +141,24 @@ export default function NamePanel({
           <p className="text-xs text-red-500 mt-1.5 font-semibold">{error}</p>
         )}
         <p className="text-xs text-gray-400 mt-1.5">
-          {names.length}/{MAX_NAMES} people added
+          {names.length}/{MAX_NAMES} Miis added
         </p>
       </div>
 
       {/* Name list */}
       {names.length > 0 && (
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
           <h2
             className="text-base font-semibold text-gray-700 mb-3"
             style={{ fontFamily: "Fredoka" }}
           >
-            People ({names.length})
+            Miis ({names.length})
           </h2>
           <ul className="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1">
             {names.map((name) => (
               <li
                 key={name}
-                className="flex items-center gap-2 group rounded-xl px-2 py-1.5 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 group rounded-xl px-2 py-1.5 hover:bg-gray-50 transition-colors border"
               >
                 <span className="text-gray-300 text-xs">👤</span>
 
@@ -173,7 +173,7 @@ export default function NamePanel({
                     maxLength={40}
                   />
                 ) : (
-                  <span className="flex-1 text-sm text-gray-700 font-medium truncate">
+                  <span className="flex-1 text-xs text-gray-700 font-medium truncate">
                     {name}
                   </span>
                 )}
@@ -203,7 +203,7 @@ export default function NamePanel({
       )}
 
       {/* Export / Import */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+      <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
         <h2
           className="text-base font-semibold text-gray-700 mb-3"
           style={{ fontFamily: "Fredoka" }}
@@ -242,7 +242,7 @@ export default function NamePanel({
           )}
         </div>
         <p className="text-xs text-gray-400 mt-2">
-          Export saves all names and bond levels. Import will replace current
+          Export saves all Miis and bonds. Import will replace current
           data.
         </p>
       </div>
