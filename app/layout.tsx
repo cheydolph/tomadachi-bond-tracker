@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tomadachi — Bond Tracker",
+  title: "Tomadachi Bond Tracker",
   description:
     "Track the bond levels between your Tomadachis!",
 };
