@@ -13,6 +13,7 @@ import {
   setBond,
 } from "@/lib/storage";
 import BondLegend from "@/components/BondLegend";
+import BondFilter from "@/components/BondFilter";
 import NamePanel from "@/components/NamePanel";
 import ConfirmDialog from "@/components/ConfirmDialog";
 
@@ -41,6 +42,8 @@ export default function HomePage() {
   // ConfirmDialog state lives at page level — outside sidebar's transform
   // stacking context — so position:fixed covers the full viewport correctly.
   const [pendingRemove, setPendingRemove] = useState<string | null>(null);
+  // Filter state: empty Set = show all; non-empty = show only those levels
+  const [activeFilters, setActiveFilters] = useState<Set<BondLevel>>(new Set());
   const sidebarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -94,6 +97,18 @@ export default function HomePage() {
 
   const handleCancelRemove = useCallback(() => setPendingRemove(null), []);
 
+  const handleToggleFilter = useCallback((level: BondLevel) => {
+    setActiveFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(level)) {
+        next.delete(level);
+      } else {
+        next.add(level);
+      }
+      return next;
+    });
+  }, []);
+
   const handleEditName = useCallback(
     (old: string, next: string) => update(editName(data, old, next)),
     [data, update]
@@ -144,18 +159,15 @@ export default function HomePage() {
       {/* ── Sticky Menu Bar ─────────────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
-          {/* Brand */}
-          <div className="flex items-center gap-2.5 flex-shrink-0">
-            <span className="text-2xl">💕</span>
-            <h1
-              className="text-xl font-bold text-gray-800"
-              style={{ fontFamily: "Fredoka" }}
-            >
-              Tomadachi
-              <span className="text-rose-400 ml-1 font-normal text-base hidden sm:inline">
-                Bond Tracker
-              </span>
-            </h1>
+          {/* Brand — tbt.png logo; falls back gracefully if file not yet added */}
+          <div className="flex items-center flex-shrink-0">
+            <img
+              src="/tbt.png"
+              alt="Tomadachi Bond Tracker"
+              width={140}
+              height={36}
+              style={{ height: "36px", width: "auto", maxWidth: "140px", objectFit: "contain" }}
+            />
           </div>
 
           {/* Legend — desktop centre */}
@@ -203,11 +215,22 @@ export default function HomePage() {
         {/* Matrix or mobile card view */}
         <main className="flex-1 p-4 min-w-0">
           {isMobile ? (
-            <MobileView
-              data={data}
-              onCycleBond={handleCycleBond}
-              onSetBond={handleSetBond}
-            />
+            <>
+              {data.names.length >= 2 && (
+                <div className="mb-3 bg-white/60 rounded-xl px-3 py-2 border border-gray-100">
+                  <BondFilter
+                    activeFilters={activeFilters}
+                    onToggle={handleToggleFilter}
+                  />
+                </div>
+              )}
+              <MobileView
+                data={data}
+                onCycleBond={handleCycleBond}
+                onSetBond={handleSetBond}
+                activeFilters={activeFilters}
+              />
+            </>
           ) : (
             <>
               <div className="mb-3">
@@ -224,10 +247,20 @@ export default function HomePage() {
                   </p>
                 )}
               </div>
+              {/* Filter bar — visible whenever there are enough names to show bonds */}
+              {data.names.length >= 2 && (
+                <div className="mb-3 bg-white/60 rounded-xl px-3 py-2 border border-gray-100">
+                  <BondFilter
+                    activeFilters={activeFilters}
+                    onToggle={handleToggleFilter}
+                  />
+                </div>
+              )}
               <BondMatrix
                 data={data}
                 onCycleBond={handleCycleBond}
                 onSetBond={handleSetBond}
+                activeFilters={activeFilters}
               />
             </>
           )}

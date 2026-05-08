@@ -82,6 +82,9 @@ export function setBond(
   to: string,
   level: BondLevel
 ): BondData {
+  // Write both A→B and B→A in one immutable return.
+  // Pure function — React calls setState exactly once with the result,
+  // so there is no recursive trigger and no infinite loop.
   return {
     ...data,
     bonds: {
@@ -89,6 +92,10 @@ export function setBond(
       [from]: {
         ...data.bonds[from],
         [to]: level,
+      },
+      [to]: {
+        ...data.bonds[to],
+        [from]: level,
       },
     },
   };

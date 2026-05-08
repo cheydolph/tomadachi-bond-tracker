@@ -7,6 +7,8 @@ interface BondMatrixProps {
   data: BondData;
   onCycleBond: (from: string, to: string) => void;
   onSetBond: (from: string, to: string, level: BondLevel) => void;
+  // Empty set means no filter (show all). Non-empty means show only matching levels.
+  activeFilters: Set<BondLevel>;
 }
 
 interface PickerState {
@@ -20,6 +22,7 @@ export default function BondMatrix({
   data,
   onCycleBond,
   onSetBond,
+  activeFilters,
 }: BondMatrixProps) {
   const { names, bonds } = data;
   const [changedCell, setChangedCell] = useState<string | null>(null);
@@ -241,6 +244,9 @@ export default function BondMatrix({
                               flex items-center justify-center
                               text-sm font-bold select-none
                               ${changedCell === cellKey ? "just-changed" : ""}
+                              ${activeFilters.size > 0 && !activeFilters.has(level as BondLevel)
+                                ? "opacity-20 saturate-0"
+                                : ""}
                             `}
                             style={{ width: CELL_SIZE, height: CELL_SIZE }}
                             onClick={() => handleCellClick(fromName, toName)}
