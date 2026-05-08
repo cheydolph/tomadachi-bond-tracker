@@ -22,7 +22,7 @@ export default function BondLegend() {
         );
       })}
       <span className="text-xs text-gray-400 ml-1">
-        · Click to cycle · Long-press to pick
+        · Click to cycle / choose between bond options
       </span>
     </div>
   );

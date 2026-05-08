@@ -120,18 +120,19 @@ export default function MobileView({
                   <div className="flex items-center gap-3 px-4 py-3">
                     {/* Name */}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-gray-800 truncate">
+                      <p className="text-lg font-bold text-gray-800 truncate">
                         {toName}
                       </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        They see you as:{" "}
+                      {/* For possibly adding in different level relationships later */}
+                      {/* <p className="text-xs text-gray-400 mt-0.5">
+                        Seen as:{" "}
                         <span
                           className={`font-semibold ${revCfg.textClass.replace("bg-", "")}`}
                           style={{ color: getTextColor(reverseLevel) }}
                         >
                           {revCfg.label}
                         </span>
-                      </p>
+                      </p> */}
                     </div>
 
                     {/* Current level display */}
@@ -155,7 +156,7 @@ export default function MobileView({
 
                   {/* Inline picker */}
                   {isPickerOpen && (
-                    <div className="border-t border-gray-100 px-4 py-3 flex gap-2 animate-slide-in">
+                    <div className="border-t border-gray-100 px-3 py-3 flex gap-2 animate-slide-in">
                       {([0, 1, 2, 3] as BondLevel[]).map((lvl) => {
                         const lcfg = BOND_CONFIG[lvl];
                         return (

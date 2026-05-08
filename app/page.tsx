@@ -158,7 +158,7 @@ export default function HomePage() {
 
       {/* ── Sticky Menu Bar ─────────────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
+        <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
           <div className="flex items-center flex-shrink-0">
             <img
               src="/tbt.png"
@@ -168,7 +168,7 @@ export default function HomePage() {
               style={{ height: "36px", width: "auto", maxWidth: "140px", objectFit: "contain" }}
             />
             <h1
-              className="text-xl font-bold text-gray-800"
+              className="text-xl font-bold text-gray-800 ml-1"
               style={{ fontFamily: "Fredoka" }}
             >
               Tomadachi
