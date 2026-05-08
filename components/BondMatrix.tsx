@@ -65,7 +65,7 @@ export default function BondMatrix({
 
   if (names.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
+      <div className="flex flex-col items-center justify-center py-2 text-center">
         <div className="text-6xl mb-4">👤</div>
         <h3
           className="text-xl font-semibold text-gray-500 mb-2"
@@ -82,13 +82,13 @@ export default function BondMatrix({
 
   if (names.length === 1) {
     return (
-      <div className="flex flex-col items-center justify-center py-24 text-center">
+      <div className="flex flex-col items-center justify-center py-2 text-center">
         <div className="text-6xl mb-4">🫧</div>
         <h3
           className="text-xl font-semibold text-gray-500 mb-2"
           style={{ fontFamily: "Fredoka" }}
         >
-          Add one more Tomadachi!
+          Add one more Mii!
         </h3>
         <p className="text-sm text-gray-400">
           You need at least 2 Miis to track bonds.
@@ -111,11 +111,11 @@ export default function BondMatrix({
         >
           <div
             ref={pickerRef}
-            className="absolute bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 flex gap-1 flex-wrap"
+            className="absolute bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 grid grid-cols-3 gap-2"
             style={{
-              left: Math.min(picker.x - 155, window.innerWidth - 320),
-              top: Math.max(picker.y - 64, 8),
-              maxWidth: 320,
+              left: Math.min(picker.x - 80, window.innerWidth - 168),
+              top: Math.max(picker.y - 8, 8),
+              width: 160,
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -126,22 +126,22 @@ export default function BondMatrix({
                 <button
                   key={level}
                   className={`
-                    flex flex-col items-center justify-center w-[46px] h-[46px] rounded-xl text-lg
+                    flex flex-col items-center justify-center w-10 h-10 rounded-xl
                     bond-cell-${level} transition-all
                     ${isCurrent ? "ring-1 ring-offset-1 ring-gray-600 scale-105" : "hover:scale-105"}
                   `}
                   title={cfg.label}
+                  aria-label={`Set bond to ${cfg.label}`}
+                  aria-pressed={isCurrent}
                   onClick={() => {
                     onSetBond(picker.from, picker.to, level);
                     setPicker(null);
                   }}
                 >
-                  <div className="flex flex-col">
-                    <span>{cfg.symbol}</span>
-                    <span className="text-[9px] font-bold opacity-70">
-                      {cfg.abbr}
-                    </span>
-                  </div>
+                  <span>{cfg.symbol}</span>
+                  <span className="text-[9px] font-bold opacity-70 leading-none">
+                    {cfg.abbr}
+                  </span>
                 </button>
               );
             })}

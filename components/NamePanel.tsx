@@ -106,7 +106,7 @@ export default function NamePanel({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Add Tomadachi */}
+      {/* Add Mii */}
       <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
         <h2
           className="text-base font-semibold text-gray-700 mb-3"

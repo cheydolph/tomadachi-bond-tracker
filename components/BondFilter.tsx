@@ -20,7 +20,7 @@ export default function BondFilter({
   const allSelected = activeFilters.size === ALL_BOND_LEVELS.length;
 
   return (
-    <div className="flex flex-wrap items-center gap-4">
+    <div className="flex flex-wrap items-center gap-2">
       <span
         className="text-xs font-semibold text-gray-400 uppercase tracking-wide flex-shrink-0"
         style={{ fontFamily: "Nunito" }}

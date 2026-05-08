@@ -150,21 +150,27 @@ body {
    Cell hover / active states
    ────────────────────────────────────────── */
 .bond-cell-btn {
-  transition: transform 0.1s ease, filter 0.1s ease, box-shadow 0.1s ease;
+  transition: filter 0.1s ease, box-shadow 0.1s ease;
   cursor: pointer;
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .bond-cell-btn:hover {
-  transform: scale(1.12);
-  filter: brightness(0.96);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  z-index: 5;
+  filter: brightness(0.93);
+  /* z-index must exceed col-header (20) and corner-cell (30) so the tooltip
+     — which is an absolute child — paints above the sticky headers.
+     We deliberately do NOT use transform here: a CSS transform creates a new
+     stacking context that traps the tooltip's z-index:50 inside the button's
+     own stacking context, which only competes at z-index:5 — losing to the
+     sticky headers. Box-shadow achieves the depth cue without that side-effect. */
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 40;
   position: relative;
 }
 
 .bond-cell-btn:active {
-  transform: scale(0.96);
+  filter: brightness(0.88);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
 }
 
 .bond-cell-btn.just-changed {
@@ -196,6 +202,9 @@ body {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s ease;
+  /* Must exceed corner-cell (30) and col-header (20). Works now that
+     .bond-cell-btn:hover no longer uses transform (which would have created
+     a new stacking context, trapping this z-index relative to the button). */
   z-index: 50;
 }
 
