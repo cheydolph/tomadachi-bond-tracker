@@ -49,6 +49,6 @@ export const BOND_CONFIG = {
   },
 } as const;
 
-export const MAX_NAMES = 75;
+export const MAX_NAMES = 70;
 export const STORAGE_KEY = "tomadachi-data";
 export const DATA_VERSION = 1;
