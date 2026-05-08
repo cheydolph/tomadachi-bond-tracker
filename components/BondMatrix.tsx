@@ -70,7 +70,7 @@ export default function BondMatrix({
   if (names.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="text-6xl mb-4">🌸</div>
+        <div className="text-6xl mb-4">👤</div>
         <h3
           className="text-xl font-semibold text-gray-500 mb-2"
           style={{ fontFamily: "Fredoka" }}
@@ -78,7 +78,7 @@ export default function BondMatrix({
           No names yet!
         </h3>
         <p className="text-sm text-gray-400">
-          Add some names in the panel to get started.
+          Add some Tomadachis to get started!
         </p>
       </div>
     );
@@ -92,7 +92,7 @@ export default function BondMatrix({
           className="text-xl font-semibold text-gray-500 mb-2"
           style={{ fontFamily: "Fredoka" }}
         >
-          Add one more person!
+          Add one more Tomadachi!
         </h3>
         <p className="text-sm text-gray-400">
           You need at least 2 names to track bonds.

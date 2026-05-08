@@ -26,7 +26,7 @@ export default function MobileView({
   if (names.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center px-4">
-        <div className="text-5xl mb-4">🌸</div>
+        <div className="text-5xl mb-4">👤</div>
         <h3
           className="text-lg font-semibold text-gray-500 mb-2"
           style={{ fontFamily: "Fredoka" }}
@@ -123,7 +123,7 @@ export default function MobileView({
                       <p className="text-lg font-bold text-gray-800 truncate">
                         {toName}
                       </p>
-                      {/* For possibly adding in different level relationships later */}
+                      {/* For possibly adding in different level bonds later */}
                       {/* <p className="text-xs text-gray-400 mt-0.5">
                         Seen as:{" "}
                         <span

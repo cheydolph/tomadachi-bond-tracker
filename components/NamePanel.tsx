@@ -106,13 +106,13 @@ export default function NamePanel({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Add name */}
+      {/* Add Tomadachi */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         <h2
           className="text-base font-semibold text-gray-700 mb-3"
           style={{ fontFamily: "Fredoka" }}
         >
-          Add a Person
+          Add Tomadachi
         </h2>
         <div className="flex gap-2">
           <input
@@ -160,7 +160,7 @@ export default function NamePanel({
                 key={name}
                 className="flex items-center gap-2 group rounded-xl px-2 py-1.5 hover:bg-gray-50 transition-colors"
               >
-                <span className="text-gray-300 text-xs">🌸</span>
+                <span className="text-gray-300 text-xs">👤</span>
 
                 {editingName === name ? (
                   <input
