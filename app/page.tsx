@@ -103,7 +103,7 @@ export default function HomePage() {
               style={{ fontFamily: "Fredoka" }}
             >
               Tomadachi
-              <span className="text-rose-400 ml-2 font-normal text-base hidden sm:inline">
+              <span className="text-rose-400 ml-2 font-normal text-base sm:inline">
                 Bond Tracker
               </span>
             </h1>
@@ -123,11 +123,11 @@ export default function HomePage() {
             )}
             <button
               onClick={() => setMobilePanelOpen((v) => !v)}
-              className="md:hidden btn-secondary flex items-center gap-1.5 text-sm"
-              aria-label="Manage people"
+              className="md:hidden btn-secondary flex items-center gap-1 text-md"
+              aria-label="Manage Miis"
             >
               <span>👥</span>
-              <span>People</span>
+              <span>Miis</span>
               {data.names.length > 0 && (
                 <span className="bg-rose-100 text-rose-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
                   {data.names.length}
@@ -190,6 +190,11 @@ export default function HomePage() {
                   />
                 </div>
               )}
+              <div className="mb-3 text-xs font-semibold text-gray-400">
+                <span>
+                  Click to cycle OR Long-press to pick
+                </span>
+              </div>
               <BondMatrix
                 data={data}
                 onCycleBond={bondData.cycleBond}
@@ -279,7 +284,7 @@ export default function HomePage() {
           so it doesn't render above the backdrop. */}
       {isMobile && !mobilePanelOpen && (
         <button
-          className="btn-primary fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-xl shadow-lg"
+          className="btn-primary scroll-up fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-xl shadow-lg"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Scroll to top"
         >

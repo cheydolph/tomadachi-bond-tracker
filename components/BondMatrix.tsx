@@ -74,7 +74,7 @@ export default function BondMatrix({
           No names yet!
         </h3>
         <p className="text-sm text-gray-400">
-          Add Tomadachis in the panel to get started.
+          Add Miis in the panel to get started.
         </p>
       </div>
     );
@@ -91,7 +91,7 @@ export default function BondMatrix({
           Add one more Tomadachi!
         </h3>
         <p className="text-sm text-gray-400">
-          You need at least 2 Tomadachis to track bonds.
+          You need at least 2 Miis to track bonds.
         </p>
       </div>
     );
@@ -128,7 +128,7 @@ export default function BondMatrix({
                   className={`
                     flex flex-col items-center justify-center w-[46px] h-[46px] rounded-xl text-lg
                     bond-cell-${level} transition-all
-                    ${isCurrent ? "ring-2 ring-offset-1 ring-gray-600 scale-110" : "hover:scale-105"}
+                    ${isCurrent ? "ring-1 ring-offset-1 ring-gray-600 scale-105" : "hover:scale-105"}
                   `}
                   title={cfg.label}
                   onClick={() => {
@@ -136,10 +136,12 @@ export default function BondMatrix({
                     setPicker(null);
                   }}
                 >
-                  <span>{cfg.symbol}</span>
-                  <span className="text-[9px] font-bold mt-0.5 opacity-70">
-                    {cfg.label.slice(0, 5)}
-                  </span>
+                  <div className="flex flex-col">
+                    <span>{cfg.symbol}</span>
+                    <span className="text-[9px] font-bold opacity-70">
+                      {cfg.abbr}
+                    </span>
+                  </div>
                 </button>
               );
             })}
@@ -198,7 +200,7 @@ export default function BondMatrix({
                     style={{ height: CELL_SIZE }}
                   >
                     <span
-                      className="text-xs font-semibold text-gray-700 truncate max-w-[110px]"
+                      className="text-sm font-semibold text-gray-700 truncate max-w-[110px]"
                       title={fromName}
                     >
                       {fromName}

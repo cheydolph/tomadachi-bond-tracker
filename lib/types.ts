@@ -9,6 +9,7 @@ export interface BondData {
 export const BOND_CONFIG = {
   0: {
     label: "Strangers",
+    abbr: "STRGR",
     emoji: "·",
     symbol: "○",
     bgClass: "bg-gray-200",
@@ -22,6 +23,7 @@ export const BOND_CONFIG = {
   },
   1: {
     label: "Acquaintances",
+    abbr: "ACQNT",
     emoji: "👋",
     symbol: "◎",
     bgClass: "bg-emerald-200",
@@ -33,6 +35,7 @@ export const BOND_CONFIG = {
   },
   2: {
     label: "Friends",
+    abbr: "FRND",
     emoji: "⭐",
     symbol: "★",
     bgClass: "bg-yellow-200",
@@ -44,6 +47,7 @@ export const BOND_CONFIG = {
   },
   3: {
     label: "Sweethearts",
+    abbr: "SWTHT",
     emoji: "💕",
     symbol: "♥",
     bgClass: "bg-pink-200",
@@ -55,6 +59,7 @@ export const BOND_CONFIG = {
   },
   4: {
     label: "Family",
+    abbr: "FAM",
     emoji: "🏠",
     symbol: "⌂",
     bgClass: "bg-orange-200",
@@ -70,6 +75,7 @@ export const BOND_CONFIG = {
     // It behaves identically to all other bond types: symmetric, reciprocal,
     // and freely selectable by the user for any pair.
     label: "One-Sided Love",
+    abbr: "1SIDE",
     emoji: "💜",
     symbol: "→",
     bgClass: "bg-purple-200",

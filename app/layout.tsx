@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Tomadachi Bond Tracker",
   description:
-    "Track the bond levels between your Tomadachis!",
+    "Track the bond levels between your Miis!",
 };
 
 export default function RootLayout({

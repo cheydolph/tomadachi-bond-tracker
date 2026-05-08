@@ -18,8 +18,6 @@ interface BondCardProps {
    * "pair"   → "{from} ↔ {to}" title, no subtitle.
    *            Used in ALL mode where both parties are shown together.
    *
-   * "target" → "{to}" title with an optional "They see you as: X" subtitle.
-   *            Used in person mode where the viewer is implicitly {from}.
    */
   displayMode: "pair" | "target";
   /** The bond level from `from` to `to`. */
@@ -67,18 +65,7 @@ export default function BondCard({
             </p>
           ) : (
             <>
-              <p className="text-sm font-bold text-gray-800 truncate">{to}</p>
-              {reverseLevel !== undefined && (
-                <p className="text-xs text-gray-400 mt-0.5">
-                  They see you as:{" "}
-                  <span
-                    className="font-semibold"
-                    style={{ color: BOND_CONFIG[reverseLevel].textHex }}
-                  >
-                    {BOND_CONFIG[reverseLevel].label}
-                  </span>
-                </p>
-              )}
+              <p className="text-lg font-bold text-gray-800 truncate">{to}</p>
             </>
           )}
         </div>

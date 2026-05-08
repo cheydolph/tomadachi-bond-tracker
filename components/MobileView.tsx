@@ -33,7 +33,7 @@ export default function MobileView({
         >
           No names yet!
         </h3>
-        <p className="text-sm text-gray-400">Tap the panel icon to add Tomadachis.</p>
+        <p className="text-sm text-gray-400">Tap the panel icon to add Miis.</p>
       </div>
     );
   }
@@ -99,8 +99,8 @@ export default function MobileView({
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    // pb-24 (~96px) ensures the fixed Scroll-to-Top FAB never overlaps the last card.
-    <div className="flex flex-col gap-4 pb-24">
+    // pb here ensures the fixed Scroll-to-Top FAB never overlaps the last card.
+    <div className="flex flex-col gap-4 pb-4">
 
       {/* Person selector */}
       <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
@@ -129,7 +129,7 @@ export default function MobileView({
 
       {/* Bond cards */}
       {names.length < 2 ? (
-        <EmptyState message="Add more Tomadachis to see bonds." />
+        <EmptyState message="Add more Miis to see bonds." />
       ) : currentPerson === null ? (
         /* ALL mode */
         <div className="flex flex-col gap-2">
@@ -141,7 +141,7 @@ export default function MobileView({
               message={
                 activeFilters.size > 0
                   ? "No bonds of the selected type found."
-                  : "Add more Tomadachis to see bonds."
+                  : "Add more Miis to see bonds."
               }
             />
           ) : (
@@ -171,7 +171,7 @@ export default function MobileView({
               message={
                 activeFilters.size > 0
                 ? `No bonds of the selected type for ${currentPerson}.`
-                  : "Add more Tomadachis to see bonds."
+                  : "Add more Miis to see bonds."
               }
             />
           ) : (
