@@ -1,10 +1,29 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const SITE_URL = "https://tomadachi-bond-tracker.netlify.app";
+
+const OG_TITLE = "Tomadachi Bond Tracker";
+const OG_DESCRIPTION =
+  "Track the bonds between your Tomodachi Life Miis with a fully responsive visual bond matrix!";
+const OG_IMAGE = `${SITE_URL}/tdbt_card.png`;
+
 export const metadata: Metadata = {
-  title: "Tomadachi Bond Tracker",
-  description:
-    "Track the bond levels between your Miis!",
+  title: OG_TITLE,
+  description: OG_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: [{ url: OG_IMAGE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
 };
 
 export default function RootLayout({
