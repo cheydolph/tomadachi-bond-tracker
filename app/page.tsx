@@ -94,12 +94,13 @@ export default function HomePage() {
             <img
               src="/tdbt_banner.png"
               alt="Tomadachi Bond Tracker"
-              width={140}
-              height={45}
+              width={130}
+              height={24}
               style={{ 
-                height: "45px", 
-                maxHeight: "50px",
+                height: "24px", 
                 width: "auto", 
+                minWidth: "130px",
+                maxWidth: "180px",
                 objectFit: "contain",
                 borderRadius: "10px"
                 }}
@@ -138,7 +139,7 @@ export default function HomePage() {
 
       {/* ── Page body ───────────────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto flex relative">
-        <main className="flex-1 px-4 py-1 min-w-0">
+        <main className="flex-1 p-4 min-w-0">
           {isMobile ? (
             <>
               {hasEnoughNamesToFilter && (
@@ -274,10 +275,12 @@ export default function HomePage() {
       </div>
 
       {/* Scroll-to-Top FAB — mobile only, hidden while the panel is open
-          so it doesn't render above the backdrop. */}
+          so it doesn't render above the backdrop.
+          fab-safe-bottom ensures it clears the iPhone home indicator via
+          env(safe-area-inset-bottom), falling back to 24px on other devices. */}
       {isMobile && !mobilePanelOpen && (
         <button
-          className="btn-primary scroll-up fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-xl shadow-lg"
+          className="btn-primary scroll-up fab-safe-bottom fixed right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-xl shadow-lg"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Scroll to top"
         >

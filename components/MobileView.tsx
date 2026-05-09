@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { BondData, BondLevel, BOND_CONFIG } from "@/lib/types";
+import { BondData, BondLevel } from "@/lib/types";
 import BondCard from "@/components/BondCard";
 
 interface MobileViewProps {
@@ -99,8 +99,8 @@ export default function MobileView({
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    // pb here ensures the fixed Scroll-to-Top FAB never overlaps the last card.
-    <div className="flex flex-col gap-4 pb-4">
+    // pb-24 (~96px) ensures the fixed Scroll-to-Top FAB never overlaps the last card.
+    <div className="flex flex-col gap-4 pb-24">
 
       {/* Person selector */}
       <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
@@ -215,8 +215,11 @@ function PersonButton({
     <button
       onClick={onClick}
       aria-pressed={isActive}
+      // min-h-[44px] meets the 44×44px touch target minimum on all target devices.
+      // flex items-center keeps the label vertically centred within the expanded hit area.
       className={`
-        text-sm px-3 py-1.5 rounded-xl font-semibold transition-all
+        min-h-[44px] flex items-center
+        text-sm px-3 rounded-xl font-semibold transition-all
         ${isActive
           ? "bg-rose-500 text-white shadow-sm"
           : "bg-gray-100 text-gray-600 hover:bg-gray-200"

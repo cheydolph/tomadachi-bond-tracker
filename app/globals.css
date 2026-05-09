@@ -305,3 +305,24 @@ body {
   font-weight: 600;
   font-family: "Nunito", sans-serif;
 }
+
+/* ──────────────────────────────────────────
+   Safe-area-aware positioning for mobile FAB
+   Requires viewport-fit=cover in the viewport meta tag.
+   max() ensures a 24px floor on devices without a home indicator.
+   ────────────────────────────────────────── */
+.fab-safe-bottom {
+  bottom: max(24px, calc(env(safe-area-inset-bottom, 0px) + 16px));
+}
+
+/* ──────────────────────────────────────────
+   Touch-target enforcement
+   Applied to interactive elements that fall below the 44×44px minimum.
+   ────────────────────────────────────────── */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

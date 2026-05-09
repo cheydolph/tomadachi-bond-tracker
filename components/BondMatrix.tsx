@@ -25,7 +25,10 @@ export default function BondMatrix({
   activeFilters,
 }: BondMatrixProps) {
   const { names, bonds } = data;
-  const [changedCell, setChangedCell] = useState<string | null>(null);
+  // Track both directions of a bond change so the mirrored cell also animates.
+  // setBond writes bonds[A][B] and bonds[B][A] simultaneously in storage.ts;
+  // this ensures the UI confirms both updates with the pop animation.
+  const [changedCells, setChangedCells] = useState<Set<string>>(new Set());
   const [picker, setPicker] = useState<PickerState | null>(null);
   const pickerRef = useRef<HTMLDivElement>(null);
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -33,9 +36,11 @@ export default function BondMatrix({
   const handleCellClick = useCallback(
     (from: string, to: string) => {
       onCycleBond(from, to);
-      const key = `${from}→${to}`;
-      setChangedCell(key);
-      setTimeout(() => setChangedCell(null), 300);
+      // Animate both A→B and B→A: setBond writes both directions, and the
+      // mirrored cell in the same table row should also show the pop feedback.
+      const both = new Set([`${from}→${to}`, `${to}→${from}`]);
+      setChangedCells(both);
+      setTimeout(() => setChangedCells(new Set()), 300);
     },
     [onCycleBond]
   );
@@ -65,7 +70,7 @@ export default function BondMatrix({
 
   if (names.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-2 text-center">
+      <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="text-6xl mb-4">👤</div>
         <h3
           className="text-xl font-semibold text-gray-500 mb-2"
@@ -82,7 +87,7 @@ export default function BondMatrix({
 
   if (names.length === 1) {
     return (
-      <div className="flex flex-col items-center justify-center py-2 text-center">
+      <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="text-6xl mb-4">🫧</div>
         <h3
           className="text-xl font-semibold text-gray-500 mb-2"
@@ -138,8 +143,8 @@ export default function BondMatrix({
                     setPicker(null);
                   }}
                 >
-                  <span>{cfg.symbol}</span>
-                  <span className="text-[9px] font-bold opacity-70 leading-none">
+                  <span className="text-base">{cfg.symbol}</span>
+                  <span className="text-[9px] font-bold mt-0.5 opacity-70 leading-none">
                     {cfg.abbr}
                   </span>
                 </button>
@@ -242,7 +247,7 @@ export default function BondMatrix({
                               bond-cell-btn bond-cell-${level}
                               flex items-center justify-center
                               text-sm font-bold select-none
-                              ${changedCell === cellKey ? "just-changed" : ""}
+                              ${changedCells.has(cellKey) ? "just-changed" : ""}
                               ${activeFilters.size > 0 && !activeFilters.has(level as BondLevel)
                                 ? "opacity-20 saturate-0"
                                 : ""}

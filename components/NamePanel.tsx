@@ -107,7 +107,7 @@ export default function NamePanel({
   return (
     <div className="flex flex-col gap-4">
       {/* Add Mii */}
-      <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         <h2
           className="text-base font-semibold text-gray-700 mb-3"
           style={{ fontFamily: "Fredoka" }}
@@ -147,7 +147,7 @@ export default function NamePanel({
 
       {/* Name list */}
       {names.length > 0 && (
-        <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
           <h2
             className="text-base font-semibold text-gray-700 mb-3"
             style={{ fontFamily: "Fredoka" }}
@@ -158,7 +158,7 @@ export default function NamePanel({
             {names.map((name) => (
               <li
                 key={name}
-                className="flex items-center gap-2 group rounded-xl px-2 py-1.5 hover:bg-gray-50 transition-colors border"
+                className="flex items-center gap-2 group rounded-xl px-2 py-2 hover:bg-gray-50 transition-colors border"
               >
                 <span className="text-gray-300 text-xs">👤</span>
 
@@ -179,18 +179,23 @@ export default function NamePanel({
                 )}
 
                 {editingName !== name && (
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  // On touch devices (mobile) there is no hover state, so opacity-0
+                  // makes the buttons permanently invisible. md:opacity-0 keeps them
+                  // always visible on mobile and hidden-until-hover on desktop.
+                  <div className="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                     <button
-                      className="text-xs text-blue-400 hover:text-blue-600 px-1.5 py-0.5 rounded-md hover:bg-blue-50 transition-colors font-semibold"
+                      className="touch-target rounded-lg text-xs text-blue-400
+                        hover:text-blue-600 hover:bg-blue-50 transition-colors font-semibold"
                       onClick={() => startEdit(name)}
-                      title="Edit name"
+                      aria-label={`Edit ${name}`}
                     >
                       Edit
                     </button>
                     <button
-                      className="text-xs text-red-300 hover:text-red-500 px-1.5 py-0.5 rounded-md hover:bg-red-50 transition-colors font-semibold"
+                      className="touch-target rounded-lg text-xs text-red-300
+                        hover:text-red-500 hover:bg-red-50 transition-colors font-semibold"
                       onClick={() => onRemoveName(name)}
-                      title="Remove"
+                      aria-label={`Remove ${name}`}
                     >
                       ✕
                     </button>
@@ -203,7 +208,7 @@ export default function NamePanel({
       )}
 
       {/* Export / Import */}
-      <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         <h2
           className="text-base font-semibold text-gray-700 mb-3"
           style={{ fontFamily: "Fredoka" }}

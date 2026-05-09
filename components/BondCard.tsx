@@ -18,6 +18,8 @@ interface BondCardProps {
    * "pair"   → "{from} ↔ {to}" title, no subtitle.
    *            Used in ALL mode where both parties are shown together.
    *
+   * "target" → "{to}" title with an optional "They see you as: X" subtitle.
+   *            Used in person mode where the viewer is implicitly {from}.
    */
   displayMode: "pair" | "target";
   /** The bond level from `from` to `to`. */
@@ -72,7 +74,7 @@ export default function BondCard({
 
         {/* Bond level badge — tap to open/close the picker */}
         <button
-          className={`bond-cell-${level} rounded-xl px-3 py-2 flex items-center gap-1.5 flex-shrink-0`}
+          className={`bond-cell-${level} min-h-[44px] rounded-xl px-3 py-2 flex items-center gap-1.5 flex-shrink-0`}
           onClick={onTogglePicker}
           aria-label={`${displayMode === "pair" ? `${from} and ${to}` : to}: ${cfg.label}. Tap to change.`}
           aria-expanded={isPickerOpen}
@@ -105,7 +107,8 @@ export default function BondCard({
                 aria-label={`Set bond to ${lcfg.label}`}
                 aria-pressed={level === lvl}
                 className={`
-                  flex-1 min-w-[60px] flex flex-col items-center py-2 rounded-xl text-sm
+                  flex-1 min-w-[60px] min-h-[44px] flex flex-col items-center
+                  justify-center py-3 rounded-xl text-sm
                   bond-cell-${lvl} transition-all
                   ${level === lvl ? "ring-2 ring-gray-500 scale-105" : "hover:scale-105"}
                 `}

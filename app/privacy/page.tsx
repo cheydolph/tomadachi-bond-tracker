@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div
-      className="min-h-screen py-8 px-4"
+      className="min-h-screen py-16 px-4"
       style={{
         background:
           "linear-gradient(135deg, #fef9f0 0%, #fdf2f8 50%, #f0fdf4 100%)",
