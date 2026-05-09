@@ -114,7 +114,7 @@ export default function BondCard({
                   {lcfg.symbol}
                 </span>
                 <span className={`text-[10px] font-bold mt-0.5 ${lcfg.textClass}`}>
-                  {lcfg.label.slice(0, 7)}
+                  {lcfg.abbr}
                 </span>
               </button>
             );
