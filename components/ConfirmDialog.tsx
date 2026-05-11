@@ -57,10 +57,10 @@ export default function ConfirmDialog({ name, onConfirm, onCancel }: ConfirmDial
       aria-labelledby="confirm-title"
       aria-describedby="confirm-desc"
     >
-      {/* Dialog card — dialogPop keyframe lives in globals.css */}
+      {/* Dialog card — dialog-pop keyframe lives in globals.css */}
       <div
         className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl"
-        style={{ animation: "dialogPop 0.18s cubic-bezier(0.34,1.56,0.64,1)" }}
+        style={{ animation: "dialog-pop 0.18s cubic-bezier(0.34,1.56,0.64,1)" }}
       >
         {/* Header stripe */}
         <div className="h-1.5 w-full bg-gradient-to-r from-red-400 to-rose-500" />

@@ -46,7 +46,7 @@ module.exports = {
       // The cream background is applied via inline style / CSS variable --cream.
       animation: {
         "pop-in": "popIn 0.15s cubic-bezier(0.34,1.56,0.64,1) forwards",
-        "fade-in": "fadeIn 0.3s ease forwards",
+        "fade-in": "fade-in 0.3s ease forwards",
         "slide-in": "slideIn 0.2s ease forwards",
       },
       keyframes: {
@@ -54,7 +54,7 @@ module.exports = {
           "0%": { transform: "scale(0.85)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
-        fadeIn: {
+        fade-in: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
         },

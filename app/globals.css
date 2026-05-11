@@ -207,10 +207,10 @@ body {
 }
 
 .bond-cell-btn.just-changed {
-  animation: cellPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: cell-pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@keyframes cellPop {
+@keyframes cell-pop {
   0% {
     transform: scale(0.88);
   }
@@ -259,7 +259,7 @@ body {
    Defined here (not inline in ConfirmDialog) so the keyframe is injected
    once at the stylesheet level rather than on every component render.
    ────────────────────────────────────────── */
-@keyframes dialogPop {
+@keyframes dialog-pop {
   from {
     opacity: 0;
     transform: scale(0.88);
@@ -279,10 +279,10 @@ body {
   border-radius: 16px;
   background: white;
   box-shadow: 0 2px 12px rgb(0, 0, 0, 6%);
-  animation: fadeIn 0.3s ease;
+  animation: fade-in 0.3s ease;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: translateY(8px);
