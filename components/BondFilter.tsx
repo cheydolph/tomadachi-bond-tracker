@@ -86,7 +86,7 @@ export default function BondFilter({
                   rounded-full text-xs font-bold whitespace-nowrap
               transition-all duration-150 select-none border
               ${isActive
-                ? `bond-cell-${level} border-transparent ring-2 ring-offset-1 ring-gray-500 scale-105`
+                ? `bond-cell-${level} ${cfg.textClass} border-transparent ring-2 ring-offset-1 ring-gray-500 scale-105`
                     : "bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700"
               }
             `}

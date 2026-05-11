@@ -28,6 +28,7 @@ Live: [tomadachi-bond-tracker.netlify.app](https://tomadachi-bond-tracker.netlif
 | 3 | Sweethearts | Pink | ♥ |
 | 4 | Family | Orange | ⌂ |
 | 5 | One-Sided Love | Purple | → |
+| 6 | Exes | Dark Gray | ✖ |
 
 Each level also uses a distinct background pattern (dots, stars, hearts, etc.) for colorblind accessibility.
 
@@ -100,7 +101,7 @@ Exports are pretty-printed JSON. Imports are validated and sanitized before touc
 
 Everything derives from `lib/types.ts`. To add another Bond type:
 
-1. Extend `BondLevel` to include `6`
+1. Extend `BondLevel` to include `7`
 2. Add an entry to `BOND_CONFIG` with `label`, `abbr`, `symbol`, `bgClass`, `textClass`, `borderClass`, `hex`, `textHex`, and `pattern`
 3. Add `.bond-cell-6` to `globals.css` with a background color and optional pattern
 4. Add the Tailwind classes used in the new entry to the `safelist` in `tailwind.config.js`

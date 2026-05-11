@@ -130,7 +130,7 @@ export default function BondMatrix({
                   key={level}
                   className={`
                     flex flex-col items-center justify-center w-10 h-10 rounded-xl
-                    bond-cell-${level} transition-all
+                    bond-cell-${level} transition-all ${cfg.textClass}
                     ${isCurrent ? "ring-1 ring-offset-1 ring-gray-600 scale-105" : "hover:scale-105"}
                   `}
                   title={cfg.label}

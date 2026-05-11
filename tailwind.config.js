@@ -20,6 +20,9 @@ module.exports = {
     "text-orange-700", "bg-orange-200", "border-orange-300",
     // Level 5 — One-Sided Love (purple)
     "text-purple-700", "bg-purple-200", "border-purple-300",
+    // Level 6 — Exes (dark gray)
+    // textClass is gray-100 (light) for contrast on the dark gray-800 background.
+    "text-gray-100", "bg-gray-800", "border-gray-700",
   ],
   theme: {
     extend: {

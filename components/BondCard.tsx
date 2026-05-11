@@ -47,12 +47,36 @@ export default function BondCard({
   to,
   displayMode,
   level,
-  reverseLevel,
   isPickerOpen,
   onTogglePicker,
   onSetBond,
 }: BondCardProps) {
   const cfg = BOND_CONFIG[level];
+
+  const renderPickerBtn = (lvl: BondLevel) => {
+    const lcfg = BOND_CONFIG[lvl];
+    return (
+      <button
+        key={lvl}
+        onClick={() => onSetBond(from, to, lvl)}
+        aria-label={`Set bond to ${lcfg.label}`}
+        aria-pressed={level === lvl}
+        className={`
+          flex-1 min-w-[60px] min-h-[44px] flex flex-col items-center
+          justify-center py-3 rounded-xl text-sm
+          bond-cell-${lvl} transition-all
+          ${level === lvl ? "ring-2 ring-gray-500 scale-105" : "hover:scale-105"}
+        `}
+      >
+        <span className={`text-base ${lcfg.textClass}`} aria-hidden="true">
+          {lcfg.symbol}
+        </span>
+        <span className={`text-[10px] font-bold mt-0.5 ${lcfg.textClass}`}>
+          {lcfg.abbr}
+        </span>
+      </button>
+    );
+  };
 
   return (
     <div className="mobile-card">
@@ -95,34 +119,16 @@ export default function BondCard({
       {/* ── Inline level picker ──────────────────────────────────── */}
       {isPickerOpen && (
         <div
-          className="border-t border-gray-100 px-4 py-3 flex flex-wrap gap-2 animate-slide-in"
+          className="border-t border-gray-100 px-4 py-3 flex flex-col gap-2 animate-slide-in"
           role="group"
           aria-label={`Choose bond level for ${displayMode === "pair" ? `${from} and ${to}` : to}`}
         >
-          {ALL_BOND_LEVELS.map((lvl) => {
-            const lcfg = BOND_CONFIG[lvl];
-            return (
-              <button
-                key={lvl}
-                onClick={() => onSetBond(from, to, lvl)}
-                aria-label={`Set bond to ${lcfg.label}`}
-                aria-pressed={level === lvl}
-                className={`
-                  flex-1 min-w-[60px] min-h-[44px] flex flex-col items-center
-                  justify-center py-3 rounded-xl text-sm
-                  bond-cell-${lvl} transition-all
-                  ${level === lvl ? "ring-2 ring-gray-500 scale-105" : "hover:scale-105"}
-                `}
-              >
-                <span className={`text-base ${lcfg.textClass}`} aria-hidden="true">
-                  {lcfg.symbol}
-                </span>
-                <span className={`text-[10px] font-bold mt-0.5 ${lcfg.textClass}`}>
-                  {lcfg.abbr}
-                </span>
-              </button>
-            );
-          })}
+          <div className="flex gap-2">
+            {ALL_BOND_LEVELS.slice(0, 4).map(renderPickerBtn)}
+          </div>
+          <div className="flex gap-2 justify-center">
+            {ALL_BOND_LEVELS.slice(4).map(renderPickerBtn)}
+          </div>
         </div>
       )}
     </div>

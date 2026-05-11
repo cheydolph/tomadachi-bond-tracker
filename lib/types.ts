@@ -1,4 +1,4 @@
-export type BondLevel = 0 | 1 | 2 | 3 | 4 | 5;
+export type BondLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface BondData {
   version: number;
@@ -85,12 +85,33 @@ export const BOND_CONFIG = {
     textHex: "#7e22ce", // purple-700
     pattern: "arrows",
   },
+  6: {
+    // "Exes" covers any relationship that has ended: ex-lovers, ex-spouses,
+    // ex-friends. Like all other bond types it is symmetric — setting A→B as
+    // Exes automatically sets B→A. The dark background intentionally contrasts
+    // with every other level to signal a severed bond at a glance.
+    label: "Exes",
+    abbr: "EX",
+    emoji: "💔",
+    // ✖ renders as a plain text character across all platforms; no emoji
+    // variation selector needed. The emoji field (💔) is reserved for contexts
+    // where a richer glyph is preferred (e.g. future notification toasts).
+    symbol: "✖",
+    bgClass: "bg-gray-800",
+    // Text must be light to remain legible on the dark gray-800 background.
+    textClass: "text-gray-100",
+    borderClass: "border-gray-700",
+    hex: "#1f2937", // gray-800 — oklch(21% 0.034 264.665)
+    textHex: "#f3f4f6", // gray-100
+    pattern: "exes",
+  },
 } as const;
 
 /** All bond levels as a typed array — single source of truth for iteration
  *  and for computing valid level ranges (e.g. cycleBond modulo). */
-export const ALL_BOND_LEVELS: BondLevel[] = [0, 1, 2, 3, 4, 5];
+export const ALL_BOND_LEVELS: BondLevel[] = [0, 1, 2, 3, 4, 5, 6];
 
 export const MAX_NAMES = 70;
 export const STORAGE_KEY = "tomadachi-data";
-export const DATA_VERSION = 1;
+// v2: added bond level 6 — Exes.
+export const DATA_VERSION = 2;
