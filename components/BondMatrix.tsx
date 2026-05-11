@@ -73,8 +73,7 @@ export default function BondMatrix({
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="text-6xl mb-4">👤</div>
         <h3
-          className="text-xl font-semibold text-gray-500 mb-2"
-          style={{ fontFamily: "Fredoka" }}
+          className="text-xl font-semibold text-gray-500 mb-2 font-fredoka"
         >
           No names yet!
         </h3>
@@ -90,8 +89,7 @@ export default function BondMatrix({
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="text-6xl mb-4">🫧</div>
         <h3
-          className="text-xl font-semibold text-gray-500 mb-2"
-          style={{ fontFamily: "Fredoka" }}
+          className="text-xl font-semibold text-gray-500 mb-2 font-fredoka"
         >
           Add one more Mii!
         </h3>

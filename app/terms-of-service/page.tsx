@@ -26,8 +26,7 @@ export default function TermsOfServicePage() {
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <h1
-            className="text-2xl font-bold text-gray-800 mb-1"
-            style={{ fontFamily: "Fredoka, sans-serif" }}
+            className="text-2xl font-bold text-gray-800 mb-1 font-fredoka"
           >
             Terms of Service
           </h1>
@@ -36,8 +35,7 @@ export default function TermsOfServicePage() {
           <div className="space-y-6 text-sm text-gray-600 leading-relaxed">
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 1. Acceptance of Terms
               </h2>
@@ -55,8 +53,7 @@ export default function TermsOfServicePage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 2. Description of Service
               </h2>
@@ -70,8 +67,7 @@ export default function TermsOfServicePage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 3. Nintendo Disclaimer
               </h2>
@@ -85,8 +81,7 @@ export default function TermsOfServicePage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 4. User Responsibilities
               </h2>
@@ -101,8 +96,7 @@ export default function TermsOfServicePage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 5. Limitation of Liability
               </h2>
@@ -116,8 +110,7 @@ export default function TermsOfServicePage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 6. Changes to Terms
               </h2>

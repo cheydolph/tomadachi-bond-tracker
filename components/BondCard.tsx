@@ -18,15 +18,16 @@ interface BondCardProps {
    * "pair"   → "{from} ↔ {to}" title, no subtitle.
    *            Used in ALL mode where both parties are shown together.
    *
-   * "target" → "{to}" title with an optional "They see you as: X" subtitle.
-   *            Used in person mode where the viewer is implicitly {from}.
+   * "target" → "{to}" title with a "They see you as: X" subtitle showing
+   *            reverseLevel. Used in person mode where the viewer is {from}.
    */
   displayMode: "pair" | "target";
   /** The bond level from `from` to `to`. */
   level: BondLevel;
   /**
    * The reverse bond level from `to` to `from`.
-   * Only rendered in "target" mode. Omit in "pair" mode.
+   * Rendered in "target" mode as "They see you as: X".
+   * Omit in "pair" mode (bonds are symmetric so it would duplicate).
    */
   reverseLevel?: BondLevel;
   /** Whether the inline level picker is currently expanded. */

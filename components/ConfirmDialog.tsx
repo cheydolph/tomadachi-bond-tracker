@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 interface ConfirmDialogProps {
   name: string;
@@ -33,7 +33,9 @@ export default function ConfirmDialog({
   // Trap focus between Cancel and Remove
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== "Tab") return;
-    const focusable = [cancelRef.current, confirmRef.current].filter(Boolean) as HTMLButtonElement[];
+    const focusable = [cancelRef.current, confirmRef.current].filter(
+      Boolean
+    ) as HTMLButtonElement[];
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     if (e.shiftKey && document.activeElement === first) {
@@ -59,7 +61,7 @@ export default function ConfirmDialog({
       aria-labelledby="confirm-title"
       aria-describedby="confirm-desc"
     >
-      {/* Dialog card */}
+      {/* Dialog card — dialogPop keyframe lives in globals.css */}
       <div
         className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden"
         style={{ animation: "dialogPop 0.18s cubic-bezier(0.34,1.56,0.64,1)" }}
@@ -76,8 +78,7 @@ export default function ConfirmDialog({
             <div>
               <h2
                 id="confirm-title"
-                className="text-base font-bold text-gray-800 leading-snug"
-                style={{ fontFamily: "Fredoka" }}
+                className="font-fredoka text-base font-bold text-gray-800 leading-snug"
               >
                 Remove &ldquo;{name}&rdquo;?
               </h2>
@@ -126,13 +127,6 @@ export default function ConfirmDialog({
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes dialogPop {
-          from { transform: scale(0.88); opacity: 0; }
-          to   { transform: scale(1);    opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }

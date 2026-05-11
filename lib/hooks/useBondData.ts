@@ -4,7 +4,6 @@ import {
   addName as addNameToData,
   cycleBond as cycleBondInData,
   editName as editNameInData,
-  importData as parseImportFile,
   loadData,
   removeName as removeNameFromData,
   saveData,
@@ -54,16 +53,27 @@ export function useBondData(): BondDataHook {
     setHydrated(true);
   }, []);
 
-  // The single write path: every mutation goes through here so saves are never
-  // forgotten and state is always consistent with localStorage.
+  // ── Write paths ────────────────────────────────────────────────────────────
+
+  // Bond mutations: debounced (400 ms). Rapid clicking 70×70 matrix cells
+  // can fire dozens of writes per second — debouncing prevents excessive I/O.
   const persist = useCallback((next: BondData) => {
     setData(next);
     saveData(next);
   }, []);
 
+  // Structural mutations: immediate. A name deletion must be flushed now;
+  // if the tab closes within 400 ms the debounced write would never fire.
+  const persistImmediate = useCallback((next: BondData) => {
+    setData(next);
+    saveData(next, true);
+  }, []);
+
+  // ── Mutations ─────────────────────────────────────────────────────────────
+
   const addName = useCallback(
-    (name: string) => persist(addNameToData(data, name)),
-    [data, persist]
+    (name: string) => persistImmediate(addNameToData(data, name)),
+    [data, persistImmediate]
   );
 
   const requestRemoveName = useCallback((name: string) => {
@@ -72,16 +82,16 @@ export function useBondData(): BondDataHook {
 
   const confirmRemove = useCallback(() => {
     if (!pendingRemove) return;
-    persist(removeNameFromData(data, pendingRemove));
+    persistImmediate(removeNameFromData(data, pendingRemove));
     setPendingRemove(null);
-  }, [data, pendingRemove, persist]);
+  }, [data, pendingRemove, persistImmediate]);
 
   const cancelRemove = useCallback(() => setPendingRemove(null), []);
 
   const editName = useCallback(
     (oldName: string, newName: string) =>
-      persist(editNameInData(data, oldName, newName)),
-    [data, persist]
+      persistImmediate(editNameInData(data, oldName, newName)),
+    [data, persistImmediate]
   );
 
   const cycleBond = useCallback(
@@ -96,8 +106,8 @@ export function useBondData(): BondDataHook {
   );
 
   const importBondData = useCallback(
-    (imported: BondData) => persist(imported),
-    [persist]
+    (imported: BondData) => persistImmediate(imported),
+    [persistImmediate]
   );
 
   return {

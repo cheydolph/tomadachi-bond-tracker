@@ -69,13 +69,7 @@ export default function HomePage() {
 
   // ── Render ───────────────────────────────────────────────────────────────
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        background:
-          "linear-gradient(135deg, #fef9f0 0%, #fdf2f8 50%, #f0fdf4 100%)",
-      }}
-    >
+    <div className="min-h-screen page-bg">
       {/* ConfirmDialog is rendered at the page root — outside any sidebar
           element with a CSS transform — so position:fixed covers the full
           viewport and is never clipped by a transform stacking context. */}
@@ -162,8 +156,7 @@ export default function HomePage() {
             <>
               <div className="mb-3">
                 <h2
-                  className="text-lg font-semibold text-gray-700"
-                  style={{ fontFamily: "Fredoka" }}
+                  className="text-lg font-semibold text-gray-700 font-fredoka"
                 >
                   Bond Matrix
                 </h2>
@@ -208,8 +201,7 @@ export default function HomePage() {
               style={{ maxHeight: "calc(100vh - 56px)" }}
             >
               <h2
-                className="text-base font-semibold text-gray-600 mb-4 flex items-center gap-2"
-                style={{ fontFamily: "Fredoka" }}
+                className="text-base font-semibold text-gray-600 mb-4 flex items-center gap-2 font-fredoka"
               >
                 <span>👥</span> Manage Miis
               </h2>
@@ -248,8 +240,7 @@ export default function HomePage() {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h2
-                    className="text-base font-semibold text-gray-700"
-                    style={{ fontFamily: "Fredoka" }}
+                    className="text-base font-semibold text-gray-700 font-fredoka"
                   >
                     Manage Miis
                   </h2>

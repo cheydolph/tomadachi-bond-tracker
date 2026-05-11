@@ -16,8 +16,8 @@ export const BOND_CONFIG = {
     textClass: "text-gray-500",
     borderClass: "border-gray-300",
     hex: "#E5E7EB",
-    // textHex matches the Tailwind v3 colour rendered by textClass — the single
-    // source of truth for inline-style text colouring (replaces getTextColor).
+    // textHex matches the Tailwind v3 color rendered by textClass — the single
+    // source of truth for inline-style text coloring (replaces getTextColor).
     textHex: "#6b7280", // gray-500
     pattern: "none",
   },

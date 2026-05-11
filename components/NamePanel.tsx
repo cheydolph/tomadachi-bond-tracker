@@ -107,10 +107,9 @@ export default function NamePanel({
   return (
     <div className="flex flex-col gap-4">
       {/* Add Mii */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+      <div className="panel-card">
         <h2
-          className="text-base font-semibold text-gray-700 mb-3"
-          style={{ fontFamily: "Fredoka" }}
+          className="text-base font-semibold text-gray-700 mb-3 font-fredoka"
         >
           Add Mii
         </h2>
@@ -147,10 +146,9 @@ export default function NamePanel({
 
       {/* Name list */}
       {names.length > 0 && (
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+        <div className="panel-card">
           <h2
-            className="text-base font-semibold text-gray-700 mb-3"
-            style={{ fontFamily: "Fredoka" }}
+            className="text-base font-semibold text-gray-700 mb-3 font-fredoka"
           >
             Miis ({names.length})
           </h2>
@@ -158,7 +156,7 @@ export default function NamePanel({
             {names.map((name) => (
               <li
                 key={name}
-                className="flex items-center gap-2 group rounded-xl px-2 py-2 hover:bg-gray-50 transition-colors border"
+                className="flex items-center gap-2 group rounded-xl px-2 py-2 hover:bg-gray-50 transition-colors border border-gray-100"
               >
                 <span className="text-gray-300 text-xs">👤</span>
 
@@ -208,10 +206,9 @@ export default function NamePanel({
       )}
 
       {/* Export / Import */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+      <div className="panel-card">
         <h2
-          className="text-base font-semibold text-gray-700 mb-3"
-          style={{ fontFamily: "Fredoka" }}
+          className="text-base font-semibold text-gray-700 mb-3 font-fredoka"
         >
           Backup & Restore
         </h2>

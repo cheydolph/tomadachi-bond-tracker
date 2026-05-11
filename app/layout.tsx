@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const SITE_URL = "https://tomadachi-bond-tracker.netlify.app";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://tomadachi-bond-tracker.netlify.app";
 
 const OG_TITLE = "Tomadachi Bond Tracker";
 const OG_DESCRIPTION =

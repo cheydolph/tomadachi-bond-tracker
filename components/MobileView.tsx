@@ -28,8 +28,7 @@ export default function MobileView({
       <div className="flex flex-col items-center justify-center py-20 text-center px-4">
         <div className="text-5xl mb-4">👤</div>
         <h3
-          className="text-lg font-semibold text-gray-500 mb-2"
-          style={{ fontFamily: "Fredoka" }}
+          className="text-lg font-semibold text-gray-500 mb-2 font-fredoka"
         >
           No names yet!
         </h3>
@@ -105,8 +104,7 @@ export default function MobileView({
       {/* Person selector */}
       <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
         <p
-          className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 px-1"
-          style={{ fontFamily: "Fredoka" }}
+          className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2 px-1 font-fredoka"
         >
           View bonds from:
         </p>
@@ -234,8 +232,7 @@ function PersonButton({
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-1"
-      style={{ fontFamily: "Fredoka" }}
+      className="text-xs font-semibold text-gray-400 uppercase tracking-wide px-1 font-fredoka"
     >
       {children}
     </p>

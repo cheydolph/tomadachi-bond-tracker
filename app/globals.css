@@ -23,6 +23,28 @@ body {
 }
 
 /* ──────────────────────────────────────────
+   Reusable utility classes
+   Extracted from repeated inline styles to keep components clean
+   and eliminate style-object allocations on every render.
+   ────────────────────────────────────────── */
+
+/* Replaces all style={{ fontFamily: "Fredoka" }} occurrences (~20 sites). */
+.font-fredoka {
+  font-family: "Fredoka", sans-serif;
+}
+
+/* Replaces the inline background gradient on the root page div. */
+.page-bg {
+  background: linear-gradient(135deg, #fef9f0 0%, #fdf2f8 50%, #f0fdf4 100%);
+}
+
+/* Replaces the repeated white card pattern in NamePanel (3×).
+   @apply lets Tailwind's JIT see these classes so they are never purged. */
+.panel-card {
+  @apply bg-white rounded-2xl p-4 shadow-sm border border-gray-100;
+}
+
+/* ──────────────────────────────────────────
    Bond cell patterns (colorblind-friendly)
    ────────────────────────────────────────── */
 .bond-cell-0 {
@@ -178,8 +200,8 @@ body {
 }
 
 @keyframes cellPop {
-  0% { transform: scale(0.88); }
-  60% { transform: scale(1.14); }
+  0%   { transform: scale(0.88); }
+  60%  { transform: scale(1.14); }
   100% { transform: scale(1); }
 }
 
@@ -213,6 +235,16 @@ body {
 }
 
 /* ──────────────────────────────────────────
+   Dialog animation
+   Defined here (not inline in ConfirmDialog) so the keyframe is injected
+   once at the stylesheet level rather than on every component render.
+   ────────────────────────────────────────── */
+@keyframes dialogPop {
+  from { transform: scale(0.88); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+/* ──────────────────────────────────────────
    Mobile card styles
    ────────────────────────────────────────── */
 .mobile-card {
@@ -225,7 +257,7 @@ body {
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ──────────────────────────────────────────
@@ -254,6 +286,10 @@ body {
   transform: translateY(0) scale(0.97);
 }
 
+/* scroll-up: sets the icon size for the FAB "↑" arrow.
+   text-2xl (1.5 rem = 24px) achieves the same result via Tailwind, but
+   keeping this class avoids touching the button's className string and
+   documents the intent explicitly. */
 .scroll-up {
   font-size: 24px;
 }

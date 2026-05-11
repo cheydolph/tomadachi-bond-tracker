@@ -25,8 +25,7 @@ export default function PrivacyPage() {
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
           <h1
-            className="text-2xl font-bold text-gray-800 mb-1"
-            style={{ fontFamily: "Fredoka, sans-serif" }}
+            className="text-2xl font-bold text-gray-800 mb-1 font-fredoka"
           >
             Privacy Policy
           </h1>
@@ -44,8 +43,7 @@ export default function PrivacyPage() {
           <div className="space-y-6 text-sm mt-6 leading-relaxed">
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 1. Data Sharing
               </h2>
@@ -57,8 +55,7 @@ export default function PrivacyPage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 2. Local Storage
               </h2>
@@ -73,8 +70,7 @@ export default function PrivacyPage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 3. No Cookies
               </h2>
@@ -86,8 +82,7 @@ export default function PrivacyPage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 4. Third-Party Services
               </h2>
@@ -109,8 +104,7 @@ export default function PrivacyPage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 5. Children&apos;s Privacy
               </h2>
@@ -123,8 +117,7 @@ export default function PrivacyPage() {
 
             <section>
               <h2
-                className="text-base font-semibold text-gray-800 mb-2"
-                style={{ fontFamily: "Fredoka, sans-serif" }}
+                className="text-base font-semibold text-gray-800 mb-2 font-fredoka"
               >
                 6. Changes to This Policy
               </h2>
