@@ -20,15 +20,15 @@ Live: [tomadachi-bond-tracker.netlify.app](https://tomadachi-bond-tracker.netlif
 
 ### Bonds
 
-| Level | Name | Color | Symbol |
-| ------- | ------ | ------- | -------- |
-| 0 | Strangers | Gray | ○ |
-| 1 | Acquaintances | Emerald | ◎ |
-| 2 | Friends | Yellow | ★ |
-| 3 | Sweethearts | Pink | ♥ |
-| 4 | Family | Orange | ⌂ |
-| 5 | One-Sided Love | Purple | → |
-| 6 | Exes | Dark Gray | ✖ |
+| Level | Name           | Color     | Symbol |
+| ----- | -------------- | --------- | ------ |
+| 0     | Strangers      | Gray      | ○      |
+| 1     | Acquaintances  | Emerald   | ◎      |
+| 2     | Friends        | Yellow    | ★      |
+| 3     | Sweethearts    | Pink      | ♥      |
+| 4     | Family         | Orange    | ⌂      |
+| 5     | One-Sided Love | Purple    | →      |
+| 6     | Exes           | Dark Gray | ✖      |
 
 Each level also uses a distinct background pattern (dots, stars, hearts, etc.) for colorblind accessibility.
 
@@ -85,7 +85,7 @@ All data is stored under the key `tomadachi-data` in `localStorage`. The shape:
   "names": ["John", "Paul", "George"],
   "bonds": {
     "John": { "Paul": 2, "George": 0 },
-    "Paul":   { "John": 2, "George": 1 },
+    "Paul": { "John": 2, "George": 1 },
     "George": { "John": 0, "Paul": 1 }
   }
 }

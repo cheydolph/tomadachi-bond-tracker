@@ -25,22 +25,20 @@ export default function BondFilter({
       {/* ── Control row ────────────────────────────────────────────
           Kept separate from the pill row so the pills can scroll
           horizontally without dragging the labels with them.        */}
-      <div className="flex items-center gap-2 flex-wrap">
-      <span
-          className="text-xs font-semibold text-gray-400 uppercase tracking-wide"
-        style={{ fontFamily: "Nunito" }}
-      >
-        Filter:
-      </span>
+      <div className="flex flex-wrap items-center gap-2">
+        <span
+          className="text-xs font-semibold uppercase tracking-wide text-gray-400"
+          style={{ fontFamily: "Nunito" }}
+        >
+          Filter:
+        </span>
 
         {/* Select All — always visible; min-height 44px for touch */}
         <button
           onClick={onSelectAll}
           disabled={allSelected}
           aria-label="Select all bond type filters"
-          className="touch-target rounded-lg px-2 text-xs font-semibold text-indigo-500
-            hover:text-indigo-700 hover:bg-indigo-50 transition-colors
-            disabled:opacity-40 disabled:cursor-default disabled:hover:bg-transparent"
+          className="touch-target rounded-lg px-2 text-xs font-semibold text-indigo-500 transition-colors hover:bg-indigo-50 hover:text-indigo-700 disabled:cursor-default disabled:opacity-40 disabled:hover:bg-transparent"
         >
           Select All
         </button>
@@ -50,15 +48,14 @@ export default function BondFilter({
           <button
             onClick={onClearAll}
             aria-label="Clear all filters"
-            className="touch-target rounded-lg px-2 text-xs font-semibold text-gray-400
-              hover:text-gray-600 hover:bg-gray-100 transition-colors"
+            className="touch-target rounded-lg px-2 text-xs font-semibold text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
           >
             Clear
           </button>
         )}
 
         {hasActive && (
-          <span className="text-xs text-gray-400 leading-none">
+          <span className="text-xs leading-none text-gray-400">
             {activeFilters.size} of {ALL_BOND_LEVELS.length} shown
           </span>
         )}
@@ -68,35 +65,31 @@ export default function BondFilter({
           overflow-x-auto + flex-nowrap prevents wrapping to 3–4 rows
           on narrow phones (412–430px). A scrollable single row is more
           scannable and keeps the filter bar a consistent height.      */}
-      <div className="overflow-x-auto -mx-1 px-1 pb-1">
+      <div className="-mx-1 overflow-x-auto px-1 pb-1">
         <div className="flex items-center gap-1.5" style={{ width: "max-content" }}>
-      {ALL_BOND_LEVELS.map((level) => {
-        const cfg = BOND_CONFIG[level];
-        const isActive = activeFilters.has(level);
+          {ALL_BOND_LEVELS.map((level) => {
+            const cfg = BOND_CONFIG[level];
+            const isActive = activeFilters.has(level);
 
-        return (
-          <button
-            key={level}
-            onClick={() => onToggle(level)}
-            aria-pressed={isActive}
-            title={`${isActive ? "Remove" : "Add"} filter: ${cfg.label}`}
+            return (
+              <button
+                key={level}
+                onClick={() => onToggle(level)}
+                aria-pressed={isActive}
+                title={`${isActive ? "Remove" : "Add"} filter: ${cfg.label}`}
                 // min-h-[44px] meets the touch target minimum.
                 // px-3 py-2.5 gives comfortable tap area around the label.
-            className={`
-                  touch-target flex items-center gap-1.5 px-3 py-2.5
-                  rounded-full text-xs font-bold whitespace-nowrap
-              transition-all duration-150 select-none border
-              ${isActive
-                ? `bond-cell-${level} ${cfg.textClass} border-transparent ring-2 ring-offset-1 ring-gray-500 scale-105`
-                    : "bg-white border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700"
-              }
-            `}
-          >
+                className={`touch-target flex select-none items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-2.5 text-xs font-bold transition-all duration-150 ${
+                  isActive
+                    ? `bond-cell-${level} ${cfg.textClass} scale-105 border-transparent ring-2 ring-gray-500 ring-offset-1`
+                    : "border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                } `}
+              >
                 <span aria-hidden="true">{cfg.symbol}</span>
-            <span>{cfg.label}</span>
-          </button>
-        );
-      })}
+                <span>{cfg.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

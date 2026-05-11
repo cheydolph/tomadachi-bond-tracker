@@ -26,9 +26,7 @@ export interface BondFilterHook {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function useBondFilter(): BondFilterHook {
-  const [activeFilters, setActiveFilters] = useState<Set<BondLevel>>(
-    new Set()
-  );
+  const [activeFilters, setActiveFilters] = useState<Set<BondLevel>>(new Set());
 
   const toggleFilter = useCallback((level: BondLevel) => {
     setActiveFilters((prev) => {

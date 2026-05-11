@@ -109,9 +109,7 @@ export default function NamePanel({
     <div className="flex flex-col gap-4">
       {/* Add Mii */}
       <div className="panel-card">
-        <h2
-          className="text-base font-semibold text-gray-700 mb-3 font-fredoka"
-        >
+        <h2 className="font-fredoka mb-3 text-base font-semibold text-gray-700">
           Add Mii
         </h2>
         <div className="flex gap-2">
@@ -137,10 +135,8 @@ export default function NamePanel({
             Add
           </button>
         </div>
-        {error && (
-          <p className="text-xs text-red-500 mt-1.5 font-semibold">{error}</p>
-        )}
-        <p className="text-xs text-gray-400 mt-1.5">
+        {error && <p className="mt-1.5 text-xs font-semibold text-red-500">{error}</p>}
+        <p className="mt-1.5 text-xs text-gray-400">
           {names.length}/{MAX_NAMES} Miis added
         </p>
       </div>
@@ -148,18 +144,16 @@ export default function NamePanel({
       {/* Name list */}
       {names.length > 0 && (
         <div className="panel-card">
-          <h2
-            className="text-base font-semibold text-gray-700 mb-3 font-fredoka"
-          >
+          <h2 className="font-fredoka mb-3 text-base font-semibold text-gray-700">
             Miis ({names.length})
           </h2>
-          <ul className="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1">
+          <ul className="flex max-h-64 flex-col gap-1.5 overflow-y-auto pr-1">
             {names.map((name) => (
               <li
                 key={name}
-                className="flex items-center gap-2 group rounded-xl px-2 py-2 hover:bg-gray-50 transition-colors border border-gray-100"
+                className="group flex items-center gap-2 rounded-xl border border-gray-100 px-2 py-2 transition-colors hover:bg-gray-50"
               >
-                <span className="text-gray-300 text-xs">👤</span>
+                <span className="text-xs text-gray-300">👤</span>
 
                 {editingName === name ? (
                   <input
@@ -172,7 +166,7 @@ export default function NamePanel({
                     maxLength={40}
                   />
                 ) : (
-                  <span className="flex-1 text-xs text-gray-700 font-medium truncate">
+                  <span className="flex-1 truncate text-xs font-medium text-gray-700">
                     {name}
                   </span>
                 )}
@@ -181,18 +175,16 @@ export default function NamePanel({
                   // On touch devices (mobile) there is no hover state, so opacity-0
                   // makes the buttons permanently invisible. md:opacity-0 keeps them
                   // always visible on mobile and hidden-until-hover on desktop.
-                  <div className="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-1 transition-opacity md:opacity-0 md:group-hover:opacity-100">
                     <button
-                      className="touch-target rounded-lg text-xs text-blue-400
-                        hover:text-blue-600 hover:bg-blue-50 transition-colors font-semibold"
+                      className="touch-target rounded-lg text-xs font-semibold text-blue-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
                       onClick={() => startEdit(name)}
                       aria-label={`Edit ${name}`}
                     >
                       Edit
                     </button>
                     <button
-                      className="touch-target rounded-lg text-xs text-red-300
-                        hover:text-red-500 hover:bg-red-50 transition-colors font-semibold"
+                      className="touch-target rounded-lg text-xs font-semibold text-red-300 transition-colors hover:bg-red-50 hover:text-red-500"
                       onClick={() => onRemoveName(name)}
                       aria-label={`Remove ${name}`}
                     >
@@ -208,9 +200,7 @@ export default function NamePanel({
 
       {/* Export / Import */}
       <div className="panel-card">
-        <h2
-          className="text-base font-semibold text-gray-700 mb-3 font-fredoka"
-        >
+        <h2 className="font-fredoka mb-3 text-base font-semibold text-gray-700">
           Backup & Restore
         </h2>
         <div className="flex flex-col gap-2">
@@ -236,17 +226,16 @@ export default function NamePanel({
             onChange={handleImport}
           />
           {importError && (
-            <p className="text-xs text-red-500 font-semibold">{importError}</p>
+            <p className="text-xs font-semibold text-red-500">{importError}</p>
           )}
           {importSuccess && (
-            <p className="text-xs text-emerald-600 font-semibold animate-fade-in">
+            <p className="animate-fade-in text-xs font-semibold text-emerald-600">
               ✓ Data imported successfully!
             </p>
           )}
         </div>
-        <p className="text-xs text-gray-400 mt-2">
-          Export saves all Miis and bonds. Import will replace current
-          data.
+        <p className="mt-2 text-xs text-gray-400">
+          Export saves all Miis and bonds. Import will replace current data.
         </p>
       </div>
     </div>

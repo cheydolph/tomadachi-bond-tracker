@@ -20,7 +20,7 @@ export default [
       "node_modules/**",
       "out/**",
       "public/**",
-      "*.config.js",   // next.config.js, postcss.config.js, tailwind.config.js
+      "*.config.js", // next.config.js, postcss.config.js, tailwind.config.js
       "eslint.config.mjs",
     ],
   },
@@ -90,15 +90,8 @@ export default [
       "import/order": [
         "warn",
         {
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling", "index"],
-          ],
-          pathGroups: [
-            { pattern: "@/**", group: "internal", position: "before" },
-          ],
+          groups: ["builtin", "external", "internal", ["parent", "sibling", "index"]],
+          pathGroups: [{ pattern: "@/**", group: "internal", position: "before" }],
           pathGroupsExcludedImportTypes: ["builtin"],
           "newlines-between": "always",
           alphabetize: { order: "asc", caseInsensitive: true },
@@ -113,7 +106,7 @@ export default [
       "no-debugger": "error",
       "prefer-const": "error",
       "no-var": "error",
-      "eqeqeq": ["error", "always", { null: "ignore" }],
+      eqeqeq: ["error", "always", { null: "ignore" }],
       "no-nested-ternary": "warn",
       "no-implicit-coercion": "warn",
     },

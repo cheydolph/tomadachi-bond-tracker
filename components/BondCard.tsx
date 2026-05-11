@@ -62,17 +62,12 @@ export default function BondCard({
         onClick={() => onSetBond(from, to, lvl)}
         aria-label={`Set bond to ${lcfg.label}`}
         aria-pressed={level === lvl}
-        className={`
-          flex-1 min-w-[60px] min-h-[44px] flex flex-col items-center
-          justify-center py-3 rounded-xl text-sm
-          bond-cell-${lvl} transition-all
-          ${level === lvl ? "ring-2 ring-gray-500 scale-105" : "hover:scale-105"}
-        `}
+        className={`flex min-h-[44px] min-w-[60px] flex-1 flex-col items-center justify-center rounded-xl py-3 text-sm bond-cell-${lvl} transition-all ${level === lvl ? "scale-105 ring-2 ring-gray-500" : "hover:scale-105"} `}
       >
         <span className={`text-base ${lcfg.textClass}`} aria-hidden="true">
           {lcfg.symbol}
         </span>
-        <span className={`text-[10px] font-bold mt-0.5 ${lcfg.textClass}`}>
+        <span className={`mt-0.5 text-[10px] font-bold ${lcfg.textClass}`}>
           {lcfg.abbr}
         </span>
       </button>
@@ -84,21 +79,19 @@ export default function BondCard({
       {/* ── Summary row ─────────────────────────────────────────── */}
       <div className="flex items-center gap-3 px-4 py-3">
         {/* Label / subtitle */}
-        <div className="flex-1 min-w-0">
+        <div className="min-w-0 flex-1">
           {displayMode === "pair" ? (
-            <p className="text-sm font-bold text-gray-800 truncate">
-              {from}{" "}
-              <span className="font-normal text-gray-400">↔</span>{" "}
-              {to}
+            <p className="truncate text-sm font-bold text-gray-800">
+              {from} <span className="font-normal text-gray-400">↔</span> {to}
             </p>
           ) : (
-            <p className="text-lg font-bold text-gray-800 truncate">{to}</p>
+            <p className="truncate text-lg font-bold text-gray-800">{to}</p>
           )}
         </div>
 
         {/* Bond level badge — tap to open/close the picker */}
         <button
-          className={`bond-cell-${level} min-h-[44px] rounded-xl px-3 py-2 flex items-center gap-1.5 flex-shrink-0`}
+          className={`bond-cell-${level} flex min-h-[44px] flex-shrink-0 items-center gap-1.5 rounded-xl px-3 py-2`}
           onClick={onTogglePicker}
           aria-label={`${displayMode === "pair" ? `${from} and ${to}` : to}: ${cfg.label}. Tap to change.`}
           aria-expanded={isPickerOpen}
@@ -106,10 +99,8 @@ export default function BondCard({
           <span className={`text-base ${cfg.textClass}`} aria-hidden="true">
             {cfg.symbol}
           </span>
-          <span className={`text-xs font-bold ${cfg.textClass}`}>
-            {cfg.label}
-          </span>
-          <span className="text-xs text-gray-400 ml-0.5" aria-hidden="true">
+          <span className={`text-xs font-bold ${cfg.textClass}`}>{cfg.label}</span>
+          <span className="ml-0.5 text-xs text-gray-400" aria-hidden="true">
             ▾
           </span>
         </button>
@@ -118,14 +109,14 @@ export default function BondCard({
       {/* ── Inline level picker ──────────────────────────────────── */}
       {isPickerOpen && (
         <div
-          className="border-t border-gray-100 px-4 py-3 flex flex-col gap-2 animate-slide-in"
+          className="flex animate-slide-in flex-col gap-2 border-t border-gray-100 px-4 py-3"
           role="group"
           aria-label={`Choose bond level for ${displayMode === "pair" ? `${from} and ${to}` : to}`}
         >
           <div className="flex gap-2">
             {ALL_BOND_LEVELS.slice(0, 4).map(renderPickerBtn)}
           </div>
-          <div className="flex gap-2 justify-center">
+          <div className="flex justify-center gap-2">
             {ALL_BOND_LEVELS.slice(4).map(renderPickerBtn)}
           </div>
         </div>

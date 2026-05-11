@@ -54,7 +54,7 @@ export default function BondMatrix({
     // Capture the rect immediately — SyntheticEvent.currentTarget becomes null
     // after the event handler returns (React event pooling), so we cannot read it
     // inside the setTimeout callback 400ms later.
-      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     longPressTimer.current = setTimeout(() => {
       setPicker({
         from,
@@ -72,15 +72,11 @@ export default function BondMatrix({
   if (names.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="text-6xl mb-4">👤</div>
-        <h3
-          className="text-xl font-semibold text-gray-500 mb-2 font-fredoka"
-        >
+        <div className="mb-4 text-6xl">👤</div>
+        <h3 className="font-fredoka mb-2 text-xl font-semibold text-gray-500">
           No names yet!
         </h3>
-        <p className="text-sm text-gray-400">
-          Add Miis in the panel to get started.
-        </p>
+        <p className="text-sm text-gray-400">Add Miis in the panel to get started.</p>
       </div>
     );
   }
@@ -88,15 +84,11 @@ export default function BondMatrix({
   if (names.length === 1) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="text-6xl mb-4">🫧</div>
-        <h3
-          className="text-xl font-semibold text-gray-500 mb-2 font-fredoka"
-        >
+        <div className="mb-4 text-6xl">🫧</div>
+        <h3 className="font-fredoka mb-2 text-xl font-semibold text-gray-500">
           Add one more Mii!
         </h3>
-        <p className="text-sm text-gray-400">
-          You need at least 2 Miis to track bonds.
-        </p>
+        <p className="text-sm text-gray-400">You need at least 2 Miis to track bonds.</p>
       </div>
     );
   }
@@ -115,7 +107,7 @@ export default function BondMatrix({
         >
           <div
             ref={pickerRef}
-            className="absolute bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 grid grid-cols-3 gap-2"
+            className="absolute grid grid-cols-3 gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl"
             style={{
               left: Math.min(picker.x - 80, window.innerWidth - 168),
               top: Math.max(picker.y - 8, 8),
@@ -129,11 +121,7 @@ export default function BondMatrix({
               return (
                 <button
                   key={level}
-                  className={`
-                    flex flex-col items-center justify-center w-10 h-10 rounded-xl
-                    bond-cell-${level} transition-all ${cfg.textClass}
-                    ${isCurrent ? "ring-1 ring-offset-1 ring-gray-600 scale-105" : "hover:scale-105"}
-                  `}
+                  className={`flex h-10 w-10 flex-col items-center justify-center rounded-xl bond-cell-${level} transition-all ${cfg.textClass} ${isCurrent ? "scale-105 ring-1 ring-gray-600 ring-offset-1" : "hover:scale-105"} `}
                   title={cfg.label}
                   aria-label={`Set bond to ${cfg.label}`}
                   aria-pressed={isCurrent}
@@ -143,7 +131,7 @@ export default function BondMatrix({
                   }}
                 >
                   <span className="text-base">{cfg.symbol}</span>
-                  <span className="text-[9px] font-bold mt-0.5 opacity-70 leading-none">
+                  <span className="mt-0.5 text-[9px] font-bold leading-none opacity-70">
                     {cfg.abbr}
                   </span>
                 </button>
@@ -163,8 +151,8 @@ export default function BondMatrix({
                 className="corner-cell"
                 style={{ minWidth: ROW_HEADER_W, width: ROW_HEADER_W }}
               >
-                <div className="flex items-end justify-end h-20 pb-2 pr-3">
-                  <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide">
+                <div className="flex h-20 items-end justify-end pb-2 pr-3">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-400">
                     From ↓ To →
                   </span>
                 </div>
@@ -200,11 +188,11 @@ export default function BondMatrix({
                   style={{ minWidth: ROW_HEADER_W, width: ROW_HEADER_W }}
                 >
                   <div
-                    className="px-3 py-0 flex items-center"
+                    className="flex items-center px-3 py-0"
                     style={{ height: CELL_SIZE }}
                   >
                     <span
-                      className="text-sm font-semibold text-gray-700 truncate max-w-[110px]"
+                      className="max-w-[110px] truncate text-sm font-semibold text-gray-700"
                       title={fromName}
                     >
                       {fromName}
@@ -224,7 +212,7 @@ export default function BondMatrix({
                   return (
                     <td
                       key={toName}
-                      className="border-t border-l border-gray-100"
+                      className="border-l border-t border-gray-100"
                       style={{
                         width: CELL_SIZE,
                         minWidth: CELL_SIZE,
@@ -234,33 +222,26 @@ export default function BondMatrix({
                     >
                       {isDiagonal ? (
                         <div
-                          className="flex items-center justify-center w-full h-full bg-gray-50"
+                          className="flex h-full w-full items-center justify-center bg-gray-50"
                           style={{ width: CELL_SIZE, height: CELL_SIZE }}
                         >
-                          <span className="text-gray-300 text-xs">—</span>
+                          <span className="text-xs text-gray-300">—</span>
                         </div>
                       ) : (
-                        <div className="relative group">
+                        <div className="group relative">
                           <button
-                            className={`
-                              bond-cell-btn bond-cell-${level}
-                              flex items-center justify-center
-                              text-sm font-bold select-none
-                              ${changedCells.has(cellKey) ? "just-changed" : ""}
-                              ${activeFilters.size > 0 && !activeFilters.has(level as BondLevel)
+                            className={`bond-cell-btn bond-cell-${level} flex select-none items-center justify-center text-sm font-bold ${changedCells.has(cellKey) ? "just-changed" : ""} ${
+                              activeFilters.size > 0 &&
+                              !activeFilters.has(level as BondLevel)
                                 ? "opacity-20 saturate-0"
-                                : ""}
-                            `}
+                                : ""
+                            } `}
                             style={{ width: CELL_SIZE, height: CELL_SIZE }}
                             onClick={() => handleCellClick(fromName, toName)}
-                            onMouseDown={(e) =>
-                              startLongPress(fromName, toName, e)
-                            }
+                            onMouseDown={(e) => startLongPress(fromName, toName, e)}
                             onMouseUp={cancelLongPress}
                             onMouseLeave={cancelLongPress}
-                            onTouchStart={(e) =>
-                              startLongPress(fromName, toName, e)
-                            }
+                            onTouchStart={(e) => startLongPress(fromName, toName, e)}
                             onTouchEnd={cancelLongPress}
                             aria-label={`Bond from ${fromName} to ${toName}: ${cfg?.label}`}
                             title={`${fromName} → ${toName}: ${cfg?.label}`}

@@ -1,28 +1,39 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
   // Safelist: classes assembled at runtime from BOND_CONFIG (e.g. cfg.textClass,
   // cfg.bgClass) are never seen as literal strings by Tailwind's JIT scanner and
   // would be purged in production without this explicit list.
   safelist: [
     // Level 0 — Strangers (gray)
-    "text-gray-500", "bg-gray-200", "border-gray-300",
+    "text-gray-500",
+    "bg-gray-200",
+    "border-gray-300",
     // Level 1 — Acquaintances (emerald)
-    "text-emerald-700", "bg-emerald-200", "border-emerald-300",
+    "text-emerald-700",
+    "bg-emerald-200",
+    "border-emerald-300",
     // Level 2 — Friends (yellow)
-    "text-yellow-700", "bg-yellow-200", "border-yellow-300",
+    "text-yellow-700",
+    "bg-yellow-200",
+    "border-yellow-300",
     // Level 3 — Sweethearts (pink)
-    "text-pink-700", "bg-pink-200", "border-pink-300",
+    "text-pink-700",
+    "bg-pink-200",
+    "border-pink-300",
     // Level 4 — Family (orange)
-    "text-orange-700", "bg-orange-200", "border-orange-300",
+    "text-orange-700",
+    "bg-orange-200",
+    "border-orange-300",
     // Level 5 — One-Sided Love (purple)
-    "text-purple-700", "bg-purple-200", "border-purple-300",
+    "text-purple-700",
+    "bg-purple-200",
+    "border-purple-300",
     // Level 6 — Exes (dark gray)
     // textClass is gray-100 (light) for contrast on the dark gray-800 background.
-    "text-gray-100", "bg-gray-800", "border-gray-700",
+    "text-gray-100",
+    "bg-gray-800",
+    "border-gray-700",
   ],
   theme: {
     extend: {

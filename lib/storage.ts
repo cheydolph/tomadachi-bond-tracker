@@ -1,10 +1,4 @@
-import {
-  ALL_BOND_LEVELS,
-  BondData,
-  BondLevel,
-  DATA_VERSION,
-  STORAGE_KEY,
-} from "./types";
+import { ALL_BOND_LEVELS, BondData, BondLevel, DATA_VERSION, STORAGE_KEY } from "./types";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Private localStorage I/O — single source of truth for all reads/writes.
@@ -215,11 +209,7 @@ export function removeName(data: BondData, name: string): BondData {
   return { ...data, names: newNames, bonds: newBonds };
 }
 
-export function editName(
-  data: BondData,
-  oldName: string,
-  newName: string
-): BondData {
+export function editName(data: BondData, oldName: string, newName: string): BondData {
   if (oldName === newName) return data;
   if (data.names.includes(newName)) return data;
 
@@ -296,9 +286,7 @@ export function importData(file: File): Promise<BondData> {
         // corrected before the data enters the app's state.
         const { data: migrated, corrections } = migrateToSymmetricBonds(validated);
         if (corrections > 0) {
-          console.info(
-            `[TBT] Import: corrected ${corrections} asymmetric bond pair(s).`
-          );
+          console.info(`[TBT] Import: corrected ${corrections} asymmetric bond pair(s).`);
         }
         resolve(migrated);
       } catch {

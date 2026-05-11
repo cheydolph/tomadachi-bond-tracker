@@ -6,20 +6,20 @@
 /** @type {import("prettier").Config} */
 const config = {
   // ── Core formatting ──────────────────────────────────────────────────────────
-  printWidth: 90,         // Matches the 90-char soft limit used in this codebase.
-                          // Longer than the Prettier default (80) to avoid excessive
-                          // wrapping in JSX className strings.
+  printWidth: 90, // Matches the 90-char soft limit used in this codebase.
+  // Longer than the Prettier default (80) to avoid excessive
+  // wrapping in JSX className strings.
   tabWidth: 2,
   useTabs: false,
   semi: true,
-  singleQuote: false,     // Keep double quotes — consistent with JSX attribute style.
+  singleQuote: false, // Keep double quotes — consistent with JSX attribute style.
   quoteProps: "as-needed",
   jsxSingleQuote: false,
-  trailingComma: "es5",   // Trailing commas in objects/arrays, not function params.
-  bracketSpacing: true,   // { foo: bar } not {foo: bar}
+  trailingComma: "es5", // Trailing commas in objects/arrays, not function params.
+  bracketSpacing: true, // { foo: bar } not {foo: bar}
   bracketSameLine: false, // JSX closing > goes on its own line.
-  arrowParens: "always",  // (x) => x, not x => x — consistent and easier to extend.
-  endOfLine: "lf",        // LF everywhere; CRLF is a Windows artifact.
+  arrowParens: "always", // (x) => x, not x => x — consistent and easier to extend.
+  endOfLine: "lf", // LF everywhere; CRLF is a Windows artifact.
 
   // ── Tailwind class sorting ───────────────────────────────────────────────────
   // prettier-plugin-tailwindcss sorts className/class strings using the same
