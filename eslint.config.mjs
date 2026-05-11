@@ -4,7 +4,7 @@
 
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
-import { createRequire } from "module";
+import { createRequire } from "node:module";
 
 // eslint-config-next 14 ships as a native flat-config array and pre-registers:
 // react, react-hooks, import, jsx-a11y, @typescript-eslint, @next/next.

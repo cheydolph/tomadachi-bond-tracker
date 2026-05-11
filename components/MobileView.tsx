@@ -15,6 +15,11 @@ interface MobileViewProps {
 /** null = ALL mode (every unique pair). string = person mode (bonds from that person). */
 type PersonSelection = string | null;
 
+// Pure utility — no closure dependencies, so it lives at module scope. (S7721)
+function pairKey(from: string, to: string): string {
+  return `${from}↔${to}`;
+}
+
 export default function MobileView({
   data,
   onSetBond,
@@ -48,7 +53,7 @@ export default function MobileView({
     for (let j = i + 1; j < names.length; j++) {
       const from = names[i];
       const to = names[j];
-      const level = (bonds[from]?.[to] ?? 0) as BondLevel;
+      const level = bonds[from]?.[to] ?? 0;
       if (activeFilters.size === 0 || activeFilters.has(level)) {
         allPairBonds.push({ from, to, level });
       }
@@ -57,44 +62,110 @@ export default function MobileView({
 
   // Person mode: bonds from currentPerson to everyone else, with filter applied.
   const personBonds =
-    currentPerson !== null
-      ? names
+    currentPerson === null
+      ? []
+      : names
           .filter((n) => n !== currentPerson)
           .map((to) => ({
             to,
-            level: (bonds[currentPerson]?.[to] ?? 0) as BondLevel,
-            reverseLevel: (bonds[to]?.[currentPerson] ?? 0) as BondLevel,
+            level: bonds[currentPerson]?.[to] ?? 0,
+            reverseLevel: bonds[to]?.[currentPerson] ?? 0,
           }))
-          .filter(({ level }) => activeFilters.size === 0 || activeFilters.has(level))
-      : [];
-
-  const emptyMessage =
-    activeFilters.size > 0
-      ? `No bonds of the selected type for ${currentPerson}.`
-      : "Add more Miis to see bonds.";
+          .filter(({ level }) => activeFilters.size === 0 || activeFilters.has(level));
 
   // ── Helpers ───────────────────────────────────────────────────────────────
 
-  function pairKey(from: string, to: string) {
-    return `${from}↔${to}`;
-  }
-
-  function personKey(to: string) {
+  function personKey(to: string): string {
     return `${currentPerson}→${to}`;
   }
 
-  function togglePicker(key: string) {
+  function togglePicker(key: string): void {
     setOpenPickerKey((prev) => (prev === key ? null : key));
   }
 
-  function handleSetBond(from: string, to: string, level: BondLevel) {
+  function handleSetBond(from: string, to: string, level: BondLevel): void {
     onSetBond(from, to, level);
     setOpenPickerKey(null);
   }
 
-  function handleSelectPerson(name: string | null) {
+  function handleSelectPerson(name: string | null): void {
     setActivePerson(name);
     setOpenPickerKey(null);
+  }
+
+  // ── Bond cards renderer ───────────────────────────────────────────────────
+  // Extracted from JSX to reduce cognitive complexity (S3776) and eliminate
+  // the nested ternary in the render tree (S3358, no-nested-ternary).
+
+  function renderBondCards(): JSX.Element {
+    if (names.length < 2) {
+      return <EmptyState message="Add more Miis to see bonds." />;
+    }
+
+    if (currentPerson === null) {
+      const emptyMessage =
+        activeFilters.size > 0
+          ? "No bonds of the selected type found."
+          : "Add more Miis to see bonds.";
+
+      return (
+        <div className="flex flex-col gap-2">
+          <SectionLabel>
+            All bonds ({allPairBonds.length} pair{allPairBonds.length === 1 ? "" : "s"})
+          </SectionLabel>
+          {allPairBonds.length === 0 ? (
+            <EmptyState message={emptyMessage} />
+          ) : (
+            allPairBonds.map(({ from, to, level }) => {
+              const key = pairKey(from, to);
+              return (
+                <BondCard
+                  key={key}
+                  from={from}
+                  to={to}
+                  displayMode="pair"
+                  level={level}
+                  isPickerOpen={openPickerKey === key}
+                  onTogglePicker={() => togglePicker(key)}
+                  onSetBond={handleSetBond}
+                />
+              );
+            })
+          )}
+        </div>
+      );
+    }
+
+    const emptyMessage =
+      activeFilters.size > 0
+        ? `No bonds of the selected type for ${currentPerson}.`
+        : "Add more Miis to see bonds.";
+
+    return (
+      <div className="flex flex-col gap-2">
+        <SectionLabel>{currentPerson}&apos;s bonds</SectionLabel>
+        {personBonds.length === 0 ? (
+          <EmptyState message={emptyMessage} />
+        ) : (
+          personBonds.map(({ to, level, reverseLevel }) => {
+            const key = personKey(to);
+            return (
+              <BondCard
+                key={key}
+                from={currentPerson}
+                to={to}
+                displayMode="target"
+                level={level}
+                reverseLevel={reverseLevel}
+                isPickerOpen={openPickerKey === key}
+                onTogglePicker={() => togglePicker(key)}
+                onSetBond={handleSetBond}
+              />
+            );
+          })
+        )}
+      </div>
+    );
   }
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -125,60 +196,7 @@ export default function MobileView({
       </div>
 
       {/* Bond cards */}
-      {names.length < 2 ? (
-        <EmptyState message="Add more Miis to see bonds." />
-      ) : currentPerson === null ? (
-        /* ALL mode */
-        <div className="flex flex-col gap-2">
-          <SectionLabel>
-            All bonds ({allPairBonds.length} pair{allPairBonds.length !== 1 ? "s" : ""})
-          </SectionLabel>
-          {allPairBonds.length === 0 ? (
-            <EmptyState message={emptyMessage} />
-          ) : (
-            allPairBonds.map(({ from, to, level }) => {
-              const key = pairKey(from, to);
-              return (
-                <BondCard
-                  key={key}
-                  from={from}
-                  to={to}
-                  displayMode="pair"
-                  level={level}
-                  isPickerOpen={openPickerKey === key}
-                  onTogglePicker={() => togglePicker(key)}
-                  onSetBond={handleSetBond}
-                />
-              );
-            })
-          )}
-        </div>
-      ) : (
-        /* Person mode */
-        <div className="flex flex-col gap-2">
-          <SectionLabel>{currentPerson}&apos;s bonds</SectionLabel>
-          {personBonds.length === 0 ? (
-            <EmptyState message={emptyMessage} />
-          ) : (
-            personBonds.map(({ to, level, reverseLevel }) => {
-              const key = personKey(to);
-              return (
-                <BondCard
-                  key={key}
-                  from={currentPerson}
-                  to={to}
-                  displayMode="target"
-                  level={level}
-                  reverseLevel={reverseLevel}
-                  isPickerOpen={openPickerKey === key}
-                  onTogglePicker={() => togglePicker(key)}
-                  onSetBond={handleSetBond}
-                />
-              );
-            })
-          )}
-        </div>
-      )}
+      {renderBondCards()}
     </div>
   );
 }
@@ -191,11 +209,11 @@ function PersonButton({
   label,
   isActive,
   onClick,
-}: {
+}: Readonly<{
   label: string;
   isActive: boolean;
   onClick: () => void;
-}) {
+}>) {
   return (
     <button
       onClick={onClick}
@@ -213,7 +231,7 @@ function PersonButton({
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <p className="font-fredoka px-1 text-xs font-semibold uppercase tracking-wide text-gray-400">
       {children}
@@ -221,6 +239,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function EmptyState({ message }: { message: string }) {
+function EmptyState({ message }: Readonly<{ message: string }>) {
   return <div className="py-8 text-center text-sm text-gray-400">{message}</div>;
 }

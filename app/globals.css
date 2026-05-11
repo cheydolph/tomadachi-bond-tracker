@@ -295,6 +295,23 @@ body {
 }
 
 /* ──────────────────────────────────────────
+   Native <dialog> element resets
+   The browser UA stylesheet adds padding, border, and positioning to <dialog>
+   that conflict with our custom card styles. Reset here so ConfirmDialog and
+   BondMatrix picker render identically to the old role="dialog" divs.
+   ────────────────────────────────────────── */
+dialog {
+  max-width: 100%;
+  padding: 0;
+  border: none;
+}
+
+/* Backdrop for ConfirmDialog — shown automatically by showModal(). */
+dialog::backdrop {
+  background: rgb(0, 0, 0, 45%);
+}
+
+/* ──────────────────────────────────────────
    Input / button base styles
    ────────────────────────────────────────── */
 .btn-primary {
@@ -337,6 +354,9 @@ body {
   font-family: Nunito, sans-serif;
   font-size: 13px;
   font-weight: 600;
+
+  /* S7924 false positive: #374151 on white = ~9:1 contrast ratio, well above WCAG AA (4.5:1).
+     Sonar may misidentify the hover background (#fff0f5) as the base context. */
   color: #374151;
   background: white;
   cursor: pointer;

@@ -39,10 +39,10 @@ export default function TermsOfServicePage(): JSX.Element {
                 to the Terms of Service below. If you do not agree to these terms, please
                 do not use this application.
               </p>
-              <p>
-                If you have any questions or concerns, please contact me at:&nbsp;
+              <p className="text-xs">
+                If you have any questions or concerns, please contact me at:{" "}
                 <a className="text-blue-700" href="mailto:roboagain@protonmail.com">
-                  roboagain@protonmail.com&nbsp;.
+                  roboagain@protonmail.com .
                 </a>
               </p>
             </section>

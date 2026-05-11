@@ -54,7 +54,14 @@ export default function BondCard({
 }: Readonly<BondCardProps>): JSX.Element {
   const cfg = BOND_CONFIG[level];
 
-  const renderPickerBtn = (lvl: BondLevel) => {
+  // Extracted to avoid nested template literals in JSX attributes. (S4624)
+  // Used in both the badge aria-label and the picker fieldset legend.
+  const pairLabel = displayMode === "pair" ? `${from} and ${to}` : to;
+
+  // Extracted render helper — avoids duplicating button JSX across the two
+  // picker rows (top 4 / bottom 3 layout). Defined inside the component so it
+  // closes over `level`, `from`, `to`, and `onSetBond`.
+  const renderPickerBtn = (lvl: BondLevel): JSX.Element => {
     const lcfg = BOND_CONFIG[lvl];
     return (
       <button
@@ -93,7 +100,7 @@ export default function BondCard({
         <button
           className={`bond-cell-${level} flex min-h-[44px] flex-shrink-0 items-center gap-1.5 rounded-xl px-3 py-2`}
           onClick={onTogglePicker}
-          aria-label={`${displayMode === "pair" ? `${from} and ${to}` : to}: ${cfg.label}. Tap to change.`}
+          aria-label={`${pairLabel}: ${cfg.label}. Tap to change.`}
           aria-expanded={isPickerOpen}
         >
           <span className={`text-base ${cfg.textClass}`} aria-hidden="true">
@@ -108,18 +115,17 @@ export default function BondCard({
 
       {/* ── Inline level picker ──────────────────────────────────── */}
       {isPickerOpen && (
-        <div
-          className="flex animate-slide-in flex-col gap-2 border-t border-gray-100 px-4 py-3"
-          role="group"
-          aria-label={`Choose bond level for ${displayMode === "pair" ? `${from} and ${to}` : to}`}
-        >
+        // <fieldset> is the semantic HTML equivalent of role="group" for a
+        // set of related form controls. (S6819)
+        <fieldset className="flex animate-slide-in flex-col gap-2 border-x-0 border-b-0 border-t border-gray-100 px-4 py-3">
+          <legend className="sr-only">Choose bond level for {pairLabel}</legend>
           <div className="flex gap-2">
             {ALL_BOND_LEVELS.slice(0, 4).map(renderPickerBtn)}
           </div>
           <div className="flex justify-center gap-2">
             {ALL_BOND_LEVELS.slice(4).map(renderPickerBtn)}
           </div>
-        </div>
+        </fieldset>
       )}
     </div>
   );

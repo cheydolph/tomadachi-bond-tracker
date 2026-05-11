@@ -31,7 +31,7 @@ export default function BondMatrix({
   // this ensures the UI confirms both updates with the pop animation.
   const [changedCells, setChangedCells] = useState<Set<string>>(new Set());
   const [picker, setPicker] = useState<PickerState | null>(null);
-  const pickerRef = useRef<HTMLDivElement>(null);
+  const pickerRef = useRef<HTMLDialogElement>(null);
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCellClick = useCallback(
@@ -74,7 +74,7 @@ export default function BondMatrix({
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="mb-4 text-6xl">👤</div>
         <h3 className="font-fredoka mb-2 text-xl font-semibold text-gray-500">
-          No names yet!
+          No Miis yet!
         </h3>
         <p className="text-sm text-gray-400">Add Miis in the panel to get started.</p>
       </div>
@@ -102,22 +102,25 @@ export default function BondMatrix({
       {picker && (
         <button
           className="fixed inset-0 z-50"
-          onClick={() => setPicker(null)}
-          onKeyDown={(e) => e.key === "Escape" && setPicker(null)}
           tabIndex={-1}
           aria-label="Close bond picker"
+          onClick={() => setPicker(null)}
+          onKeyDown={(e) => e.key === "Escape" && setPicker(null)}
+          onTouchStart={() => setPicker(null)}
         >
-          <div
+          {/* Native <dialog> replaces role="dialog" on a plain div. (S6819, S6847)
+              `open` renders it inline at the positioned coordinates; we manage
+              the backdrop ourselves with the parent overlay div above. */}
+          <dialog
             ref={pickerRef}
-            role="dialog"
-            aria-label="Select bond level"
-            aria-modal="true"
-            className="absolute grid grid-cols-3 gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl"
+            open
+            className="absolute m-0 grid grid-cols-3 gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl"
             style={{
               left: Math.min(picker.x - 80, window.innerWidth - 168),
               top: Math.max(picker.y - 8, 8),
               width: 160,
             }}
+            aria-label="Select bond level"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
           >
@@ -127,7 +130,7 @@ export default function BondMatrix({
               return (
                 <button
                   key={level}
-                  className={`flex h-10 w-10 flex-col items-center justify-center rounded-xl bond-cell-${level} transition-all ${cfg.textClass} ${isCurrent ? "scale-105 ring-1 ring-gray-600 ring-offset-1" : "hover:scale-105"} `}
+                  className={`flex h-10 w-10 flex-col items-center justify-center rounded-xl bond-cell-${level} transition-all ${isCurrent ? "scale-105 ring-1 ring-gray-600 ring-offset-1" : "hover:scale-105"} `}
                   title={cfg.label}
                   aria-label={`Set bond to ${cfg.label}`}
                   aria-pressed={isCurrent}
@@ -143,7 +146,7 @@ export default function BondMatrix({
                 </button>
               );
             })}
-          </div>
+          </dialog>
         </button>
       )}
 

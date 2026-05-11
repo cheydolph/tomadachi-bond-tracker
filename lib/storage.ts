@@ -55,7 +55,7 @@ function validateAndSanitizeBondData(raw: unknown): BondData | null {
     const row = rawBonds[from];
     if (typeof row !== "object" || row === null) continue;
     sanitizedBonds[from] = {};
-    for (const to of Object.keys(row as object)) {
+    for (const to of Object.keys(row)) {
       const val = (row as Record<string, unknown>)[to];
       sanitizedBonds[from][to] = (
         typeof val === "number" &&
@@ -70,7 +70,7 @@ function validateAndSanitizeBondData(raw: unknown): BondData | null {
 
   return {
     version: DATA_VERSION,
-    names: parsed.names as string[],
+    names: parsed.names,
     bonds: sanitizedBonds,
   };
 }
@@ -96,7 +96,7 @@ function migrateToSymmetricBonds(data: BondData): {
   // Deep-clone bonds so we never mutate the input.
   const fixed: Record<string, Record<string, BondLevel>> = {};
   for (const name of names) {
-    fixed[name] = { ...(bonds[name] ?? {}) };
+    fixed[name] = { ...bonds[name] };
   }
 
   // Iterate each unique ordered pair (i < j).
@@ -131,7 +131,7 @@ function migrateToSymmetricBonds(data: BondData): {
 const EMPTY_DATA: BondData = { version: DATA_VERSION, names: [], bonds: {} };
 
 export function loadData(): BondData {
-  if (typeof window === "undefined") return EMPTY_DATA;
+  if (globalThis.window === undefined) return EMPTY_DATA;
 
   const raw = readFromStorage();
   if (!raw) return EMPTY_DATA;
@@ -164,7 +164,7 @@ export function loadData(): BondData {
  *                  (default), debounce 400 ms to batch rapid bond clicks.
  */
 export function saveData(data: BondData, immediate = false): void {
-  if (typeof window === "undefined") return;
+  if (globalThis.window === undefined) return;
 
   // Always minified for storage — pretty-print is only for human-readable exports.
   const json = JSON.stringify(data);
@@ -221,7 +221,7 @@ export function editName(data: BondData, oldName: string, newName: string): Bond
     newBonds[n] = {};
     newNames.forEach((m) => {
       const srcM = m === newName ? oldName : m;
-      newBonds[n][m] = (data.bonds[srcName]?.[srcM] ?? 0) as BondLevel;
+      newBonds[n][m] = data.bonds[srcName]?.[srcM] ?? 0;
     });
     delete newBonds[n][n]; // no self-bonds
   });
@@ -271,29 +271,34 @@ export function exportData(data: BondData): void {
   URL.revokeObjectURL(url);
 }
 
-export function importData(file: File): Promise<BondData> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const parsed: unknown = JSON.parse(e.target?.result as string);
-        const validated = validateAndSanitizeBondData(parsed);
-        if (!validated) {
-          reject(new Error("Invalid file format"));
-          return;
-        }
-        // Run migration on import so asymmetric bonds from old exports are
-        // corrected before the data enters the app's state.
-        const { data: migrated, corrections } = migrateToSymmetricBonds(validated);
-        if (corrections > 0) {
-          console.info(`[TBT] Import: corrected ${corrections} asymmetric bond pair(s).`);
-        }
-        resolve(migrated);
-      } catch {
-        reject(new Error("Failed to parse JSON"));
-      }
-    };
-    reader.onerror = () => reject(new Error("Failed to read file"));
-    reader.readAsText(file);
-  });
+export async function importData(file: File): Promise<BondData> {
+  let text: string;
+  try {
+    // File extends Blob — .text() is the modern replacement for
+    // FileReader.readAsText(). Returns Promise<string> directly,
+    text = await file.text();
+  } catch {
+    throw new Error("Failed to read file");
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new Error("Failed to parse JSON");
+  }
+
+  const validated = validateAndSanitizeBondData(parsed);
+  if (!validated) {
+    throw new Error("Invalid file format");
+  }
+
+  // Run migration on import so asymmetric bonds from old exports are
+  // corrected before the data enters the app's state.
+  const { data: migrated, corrections } = migrateToSymmetricBonds(validated);
+  if (corrections > 0) {
+    console.info(`[TBT] Import: corrected ${corrections} asymmetric bond pair(s).`);
+  }
+
+  return migrated;
 }
