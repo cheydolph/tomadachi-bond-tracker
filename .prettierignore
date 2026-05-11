@@ -1,0 +1,19 @@
+# .prettierignore
+
+# Build output
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Auto-generated Next.js files
+next-env.d.ts
+
+# Lock files — never reformat these; it breaks reproducibility
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Public assets — SVGs and images don't need formatting
+public/

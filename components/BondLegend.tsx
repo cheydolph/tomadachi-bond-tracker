@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import { BOND_CONFIG, ALL_BOND_LEVELS } from "@/lib/types";
 
 export default function BondLegend() {

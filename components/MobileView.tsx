@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { BondData, BondLevel } from "@/lib/types";
+
 import BondCard from "@/components/BondCard";
+import { BondData, BondLevel } from "@/lib/types";
 
 interface MobileViewProps {
   data: BondData;

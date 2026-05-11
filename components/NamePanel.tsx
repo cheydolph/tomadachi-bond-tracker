@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { BondData, MAX_NAMES } from "@/lib/types";
+
 import { exportData, importData } from "@/lib/storage";
+import { BondData, MAX_NAMES } from "@/lib/types";
 
 interface NamePanelProps {
   data: BondData;

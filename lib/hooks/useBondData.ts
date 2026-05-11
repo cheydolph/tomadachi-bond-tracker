@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { BondData, BondLevel } from "@/lib/types";
+
 import {
   addName as addNameToData,
   cycleBond as cycleBondInData,
@@ -9,6 +9,7 @@ import {
   saveData,
   setBond as setBondInData,
 } from "@/lib/storage";
+import { BondData, BondLevel } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Return type — explicit interface keeps consumers honest about what the hook

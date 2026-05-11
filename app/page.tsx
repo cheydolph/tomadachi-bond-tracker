@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { useBondData } from "@/lib/hooks/useBondData";
-import { useBondFilter } from "@/lib/hooks/useBondFilter";
-import BondLegend from "@/components/BondLegend";
+import React, { useEffect, useRef, useState } from "react";
+
 import BondFilter from "@/components/BondFilter";
-import NamePanel from "@/components/NamePanel";
+import BondLegend from "@/components/BondLegend";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import Footer from "@/components/Footer";
+import NamePanel from "@/components/NamePanel";
+import { useBondData } from "@/lib/hooks/useBondData";
+import { useBondFilter } from "@/lib/hooks/useBondFilter";
 
 // Dynamic imports: both components rely on localStorage / browser APIs and
 // must not run during SSR.

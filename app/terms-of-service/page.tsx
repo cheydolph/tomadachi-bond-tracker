@@ -74,7 +74,7 @@ export default function TermsOfServicePage() {
               <p>
                 This site is an independent fan-made tool and is
                 not affiliated with, endorsed by, associated with, or connected to Nintendo Co.,
-                Ltd. in any way. "Mii" and all related character designs are trademarks of Nintendo Co., Ltd. All Nintendo trademarks, characters, and
+                Ltd. in any way. &quot;Mii&quot; and all related character designs are trademarks of Nintendo Co., Ltd. All Nintendo trademarks, characters, and
                 intellectual property belong to their respective owners.
               </p>
             </section>
@@ -90,7 +90,7 @@ export default function TermsOfServicePage() {
                 Because all data is stored only in your browser&apos;s
                 localStorage, clearing your browser data will permanently delete
                 your bond records. We recommend exporting your data regularly
-                using the built-in JSON export feature or saving this website as an exception if you regularly clear your cookies / localStorage from your browser's settings.
+                using the built-in JSON export feature or saving this website as an exception if you regularly clear your cookies / localStorage from your browser&apos;s settings.
               </p>
             </section>
 

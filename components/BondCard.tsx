@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+
 import { ALL_BOND_LEVELS, BOND_CONFIG, BondLevel } from "@/lib/types";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -91,9 +92,7 @@ export default function BondCard({
               {to}
             </p>
           ) : (
-            <>
-              <p className="text-lg font-bold text-gray-800 truncate">{to}</p>
-            </>
+            <p className="text-lg font-bold text-gray-800 truncate">{to}</p>
           )}
         </div>
 
