@@ -212,9 +212,7 @@ export default function BondMatrix({
                 {/* Bond cells */}
                 {names.map((toName) => {
                   const isDiagonal = fromName === toName;
-                  const level = isDiagonal
-                    ? null
-                    : ((bonds[fromName]?.[toName] ?? 0));
+                  const level = isDiagonal ? null : (bonds[fromName]?.[toName] ?? 0);
                   const cfg = level === null ? null : BOND_CONFIG[level];
                   const cellKey = `${fromName}→${toName}`;
 

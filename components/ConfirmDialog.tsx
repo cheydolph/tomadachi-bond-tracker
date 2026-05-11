@@ -65,9 +65,6 @@ export default function ConfirmDialog({
   };
 
   return (
-    // Native <dialog> element — replaces role="dialog" on a <div>. (S6819, S6847)
-    // showModal() positions it above all other content and provides ::backdrop.
-    // Styles are reset in globals.css (dialog base rule).
     <dialog
       ref={dialogRef}
       className="m-auto w-full max-w-sm overflow-hidden rounded-2xl border-0 p-0 shadow-2xl"
@@ -118,10 +115,10 @@ export default function ConfirmDialog({
               fontFamily: "Nunito",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget).style.filter = "brightness(1.08)";
+              e.currentTarget.style.filter = "brightness(1.08)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget).style.filter = "";
+              e.currentTarget.style.filter = "";
             }}
           >
             Remove
