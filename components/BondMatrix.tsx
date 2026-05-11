@@ -214,8 +214,8 @@ export default function BondMatrix({
                   const isDiagonal = fromName === toName;
                   const level = isDiagonal
                     ? null
-                    : ((bonds[fromName]?.[toName] ?? 0) as BondLevel);
-                  const cfg = level !== null ? BOND_CONFIG[level] : null;
+                    : ((bonds[fromName]?.[toName] ?? 0));
+                  const cfg = level === null ? null : BOND_CONFIG[level];
                   const cellKey = `${fromName}→${toName}`;
 
                   return (

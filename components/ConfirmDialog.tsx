@@ -12,7 +12,7 @@ export default function ConfirmDialog({
   name,
   onConfirm,
   onCancel,
-}: ConfirmDialogProps): JSX.Element {
+}: Readonly<ConfirmDialogProps>): JSX.Element {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
   const confirmRef = useRef<HTMLButtonElement>(null);
@@ -51,7 +51,7 @@ export default function ConfirmDialog({
       Boolean
     ) as HTMLButtonElement[];
     const first = focusable[0];
-    const last = focusable[focusable.length - 1];
+    const last = focusable.at(-1);
     // Guard added for ts(18048) — focusable array could theoretically be empty
     // before refs are assigned.
     if (!first || !last) return;
@@ -118,10 +118,10 @@ export default function ConfirmDialog({
               fontFamily: "Nunito",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.filter = "brightness(1.08)";
+              (e.currentTarget).style.filter = "brightness(1.08)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.filter = "";
+              (e.currentTarget).style.filter = "";
             }}
           >
             Remove
