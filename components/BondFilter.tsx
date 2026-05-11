@@ -16,7 +16,7 @@ export default function BondFilter({
   onToggle,
   onSelectAll,
   onClearAll,
-}: BondFilterProps) {
+}: Readonly<BondFilterProps>): JSX.Element {
   const hasActive = activeFilters.size > 0;
   const allSelected = activeFilters.size === ALL_BOND_LEVELS.length;
 

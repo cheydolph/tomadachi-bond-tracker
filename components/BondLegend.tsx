@@ -4,7 +4,7 @@ import React from "react";
 
 import { BOND_CONFIG, ALL_BOND_LEVELS } from "@/lib/types";
 
-export default function BondLegend() {
+export default function BondLegend(): JSX.Element {
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="text-sm font-semibold">Legend: </span>

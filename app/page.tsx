@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import BondFilter from "@/components/BondFilter";
@@ -26,7 +27,7 @@ const MobileView = dynamic(() => import("@/components/MobileView"), {
   ssr: false,
 });
 
-export default function HomePage() {
+export default function HomePage(): JSX.Element {
   // ── Data & filter state (all business logic lives in the hooks) ──────────
   const bondData = useBondData();
   const bondFilter = useBondFilter();
@@ -86,16 +87,15 @@ export default function HomePage() {
       <header className="sticky top-0 z-40 border-b border-gray-100 bg-yellow-300 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between gap-2 px-4">
           <div className="flex flex-shrink-0 items-center rounded-xl ring-2 ring-yellow-300 ring-offset-0">
-            <img
+            <Image
               src="/tdbt_banner.png"
               alt="Tomadachi Bond Tracker"
               width={130}
               height={24}
+              priority
               style={{
                 height: "24px",
                 width: "auto",
-                minWidth: "130px",
-                maxWidth: "180px",
                 objectFit: "contain",
                 borderRadius: "10px",
               }}
@@ -214,9 +214,12 @@ export default function HomePage() {
         {isMobile && (
           <>
             {mobilePanelOpen && (
-              <div
+              <button
                 className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
                 onClick={() => setMobilePanelOpen(false)}
+                onKeyDown={(e) => e.key === "Escape" && setMobilePanelOpen(false)}
+                tabIndex={-1}
+                aria-label="Close panel"
               />
             )}
             <aside

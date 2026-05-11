@@ -24,7 +24,7 @@ export default function BondMatrix({
   onCycleBond,
   onSetBond,
   activeFilters,
-}: BondMatrixProps) {
+}: Readonly<BondMatrixProps>): JSX.Element {
   const { names, bonds } = data;
   // Track both directions of a bond change so the mirrored cell also animates.
   // setBond writes bonds[A][B] and bonds[B][A] simultaneously in storage.ts;
@@ -100,13 +100,18 @@ export default function BondMatrix({
     <div className="relative">
       {/* Bond picker overlay */}
       {picker && (
-        <div
+        <button
           className="fixed inset-0 z-50"
           onClick={() => setPicker(null)}
-          onTouchStart={() => setPicker(null)}
+          onKeyDown={(e) => e.key === "Escape" && setPicker(null)}
+          tabIndex={-1}
+          aria-label="Close bond picker"
         >
           <div
             ref={pickerRef}
+            role="dialog"
+            aria-label="Select bond level"
+            aria-modal="true"
             className="absolute grid grid-cols-3 gap-2 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl"
             style={{
               left: Math.min(picker.x - 80, window.innerWidth - 168),
@@ -114,6 +119,7 @@ export default function BondMatrix({
               width: 160,
             }}
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
           >
             {ALL_BOND_LEVELS.map((level) => {
               const cfg = BOND_CONFIG[level];
@@ -138,7 +144,7 @@ export default function BondMatrix({
               );
             })}
           </div>
-        </div>
+        </button>
       )}
 
       {/* Matrix scroll container */}

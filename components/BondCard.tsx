@@ -51,7 +51,7 @@ export default function BondCard({
   isPickerOpen,
   onTogglePicker,
   onSetBond,
-}: BondCardProps) {
+}: Readonly<BondCardProps>): JSX.Element {
   const cfg = BOND_CONFIG[level];
 
   const renderPickerBtn = (lvl: BondLevel) => {

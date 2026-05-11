@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import {
   addName as addNameToData,
@@ -40,19 +40,13 @@ export interface BondDataHook {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function useBondData(): BondDataHook {
-  const [data, setData] = useState<BondData>({
-    version: 1,
-    names: [],
-    bonds: {},
-  });
-  const [hydrated, setHydrated] = useState(false);
-  const [pendingRemove, setPendingRemove] = useState<string | null>(null);
+  // After — lazy initializer runs once on mount, no effect needed
+  // The () => syntax means the function only runs client-side on first render,
+  // never during SSR (where window is undefined — loadData already guards this).
+  const [data, setData] = useState<BondData>(() => loadData());
+  const [hydrated] = useState(true);
 
-  // Load persisted data once on mount (client-side only).
-  useEffect(() => {
-    setData(loadData());
-    setHydrated(true);
-  }, []);
+  const [pendingRemove, setPendingRemove] = useState<string | null>(null);
 
   // ── Write paths ────────────────────────────────────────────────────────────
 

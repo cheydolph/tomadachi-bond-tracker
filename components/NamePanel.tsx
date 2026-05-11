@@ -19,7 +19,7 @@ export default function NamePanel({
   onRemoveName,
   onEditName,
   onImport,
-}: NamePanelProps) {
+}: Readonly<NamePanelProps>): JSX.Element {
   const [input, setInput] = useState("");
   const [editingName, setEditingName] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");

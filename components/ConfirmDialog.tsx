@@ -8,7 +8,11 @@ interface ConfirmDialogProps {
   onCancel: () => void;
 }
 
-export default function ConfirmDialog({ name, onConfirm, onCancel }: ConfirmDialogProps) {
+export default function ConfirmDialog({
+  name,
+  onConfirm,
+  onCancel,
+}: Readonly<ConfirmDialogProps>): JSX.Element {
   const cancelRef = useRef<HTMLButtonElement>(null);
   const confirmRef = useRef<HTMLButtonElement>(null);
 

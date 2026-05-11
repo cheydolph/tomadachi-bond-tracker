@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Tomadachi Bond Tracker - Terms of Service",
 };
 
-export default function TermsOfServicePage() {
+export default function TermsOfServicePage(): JSX.Element {
   return (
     <div
       className="min-h-screen px-4 py-16"

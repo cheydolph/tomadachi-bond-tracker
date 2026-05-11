@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy — Tomadachi Bond Tracker",
 };
 
-export default function PrivacyPage() {
+export default function PrivacyPage(): JSX.Element {
   return (
     <div
       className="min-h-screen px-4 py-16"

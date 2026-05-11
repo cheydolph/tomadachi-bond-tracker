@@ -15,7 +15,11 @@ interface MobileViewProps {
 /** null = ALL mode (every unique pair). string = person mode (bonds from that person). */
 type PersonSelection = string | null;
 
-export default function MobileView({ data, onSetBond, activeFilters }: MobileViewProps) {
+export default function MobileView({
+  data,
+  onSetBond,
+  activeFilters,
+}: Readonly<MobileViewProps>): JSX.Element {
   const { names, bonds } = data;
   const [activePerson, setActivePerson] = useState<PersonSelection>(null);
   const [openPickerKey, setOpenPickerKey] = useState<string | null>(null);
@@ -63,6 +67,11 @@ export default function MobileView({ data, onSetBond, activeFilters }: MobileVie
           }))
           .filter(({ level }) => activeFilters.size === 0 || activeFilters.has(level))
       : [];
+
+  const emptyMessage =
+    activeFilters.size > 0
+      ? `No bonds of the selected type for ${currentPerson}.`
+      : "Add more Miis to see bonds.";
 
   // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -125,13 +134,7 @@ export default function MobileView({ data, onSetBond, activeFilters }: MobileVie
             All bonds ({allPairBonds.length} pair{allPairBonds.length !== 1 ? "s" : ""})
           </SectionLabel>
           {allPairBonds.length === 0 ? (
-            <EmptyState
-              message={
-                activeFilters.size > 0
-                  ? "No bonds of the selected type found."
-                  : "Add more Miis to see bonds."
-              }
-            />
+            <EmptyState message={emptyMessage} />
           ) : (
             allPairBonds.map(({ from, to, level }) => {
               const key = pairKey(from, to);
@@ -155,13 +158,7 @@ export default function MobileView({ data, onSetBond, activeFilters }: MobileVie
         <div className="flex flex-col gap-2">
           <SectionLabel>{currentPerson}&apos;s bonds</SectionLabel>
           {personBonds.length === 0 ? (
-            <EmptyState
-              message={
-                activeFilters.size > 0
-                  ? `No bonds of the selected type for ${currentPerson}.`
-                  : "Add more Miis to see bonds."
-              }
-            />
+            <EmptyState message={emptyMessage} />
           ) : (
             personBonds.map(({ to, level, reverseLevel }) => {
               const key = personKey(to);

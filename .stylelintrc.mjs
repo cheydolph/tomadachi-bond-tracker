@@ -10,7 +10,7 @@
 // JSX are handled by prettier-plugin-tailwindcss, not Stylelint.
 
 /** @type {import('stylelint').Config} */
-export default {
+const config = {
   // ── Extends ─────────────────────────────────────────────────────────────────
   extends: [
     // stylelint-config-standard: enforces CSS best practices (no duplicate
@@ -215,3 +215,4 @@ export default {
   files: ["**/*.css"],
   ignoreFiles: ["node_modules/**", ".next/**", "out/**"],
 };
+export default config;
