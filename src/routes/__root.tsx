@@ -1,9 +1,16 @@
-import { HeadContent, Link, Outlet, Scripts, createRootRoute } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Link,
+  Outlet,
+  Scripts,
+  createRootRoute,
+} from '@tanstack/react-router'
 
 import appCss from '../styles.css?url'
 
 const SITE_URL =
-  import.meta.env['VITE_SITE_URL'] ?? 'https://tomadachi-bond-tracker.netlify.app'
+  import.meta.env['VITE_SITE_URL'] ??
+  'https://tomadachi-bond-tracker.netlify.app'
 
 const OG_TITLE = 'Tomadachi Bond Tracker'
 const OG_DESCRIPTION =
@@ -65,9 +72,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 function NotFound() {
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center gap-6 text-center px-4 page-bg"
-    >
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6 text-center px-4 page-bg">
       <div className="text-6xl">🔍</div>
       <h1 className="text-2xl font-bold text-gray-700 font-fredoka">
         Page not found
@@ -75,10 +80,7 @@ function NotFound() {
       <p className="text-sm text-gray-400">
         The page you&apos;re looking for doesn&apos;t exist.
       </p>
-      <Link
-        to="/"
-        className="btn-primary"
-      >
+      <Link to="/" className="btn-primary">
         ← Back to Bond Tracker
       </Link>
     </div>

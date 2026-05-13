@@ -52,7 +52,7 @@ function HomePage() {
   // ── Loading state ────────────────────────────────────────────────────────
   if (!bondData.hydrated) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center page-bg">
         <div className="text-5xl animate-pulse">💕</div>
       </div>
     )
@@ -76,10 +76,15 @@ function HomePage() {
         />
       )}
 
-      {/* ── Sticky header / menu bar ────────────────────────────── */}
-      <header className="sticky top-0 z-40 bg-yellow-300 backdrop-blur-md border-b border-gray-100 shadow-sm">
+      {/* ── Header ──────────────────────────────────────────────────────── */}
+      <header
+        className="sticky top-0 z-40
+        bg-yellow-300 dark:bg-yellow-950
+        backdrop-blur-md border-b border-gray-100 dark:border-yellow-900/40
+        shadow-sm"
+      >
         <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
-          <div className="flex items-center flex-shrink-0 ring-2 ring-offset-0 ring-yellow-300 rounded-xl">
+          <div className="flex items-center flex-shrink-0 ring-2 ring-offset-0 ring-yellow-300 dark:ring-yellow-900 rounded-xl">
             <img
               src="/tdbt_banner.png"
               alt="Tomadachi Bond Tracker"
@@ -96,9 +101,15 @@ function HomePage() {
 
           <div className="flex items-center gap-2 flex-shrink-0">
             {data.names.length > 0 && (
-              <span className="hidden sm:flex items-center gap-1 text-base text-gray-500 bg-white rounded-full px-2.5 py-1 border border-gray-200">
+              <span
+                className="hidden sm:flex items-center gap-1 text-base
+                text-gray-500 dark:text-yellow-200
+                bg-white dark:bg-yellow-900/60
+                rounded-full px-2.5 py-1
+                border border-gray-200 dark:border-yellow-800/50"
+              >
                 <span>👥</span>
-                <span className="font-bold text-gray-700">
+                <span className="font-bold text-gray-700 dark:text-yellow-100">
                   {data.names.length}
                 </span>{' '}
                 Miis
@@ -112,7 +123,7 @@ function HomePage() {
               <span>👥</span>
               <span>Miis</span>
               {data.names.length > 0 && (
-                <span className="bg-rose-100 text-rose-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                <span className="bg-rose-100 dark:bg-rose-900 text-rose-600 dark:text-rose-200 text-xs font-bold px-1.5 py-0.5 rounded-full">
                   {data.names.length}
                 </span>
               )}
@@ -126,13 +137,13 @@ function HomePage() {
         <BondLegend />
       </div>
 
-      {/* ── Page body ───────────────────────────────────────────── */}
+      {/* ── Page body ───────────────────────────────────────────────────── */}
       <div className="max-w-screen-xl mx-auto flex relative">
         <main className="flex-1 p-4 min-w-0">
           {isMobile ? (
             <>
               {hasEnoughNamesToFilter && (
-                <div className="mb-3 bg-white/60 rounded-xl px-3 py-2 border border-gray-100">
+                <div className="mb-3 bg-white/60 dark:bg-white/5 rounded-xl px-3 py-2 border border-gray-100 dark:border-white/10">
                   <BondFilter
                     activeFilters={activeFilters}
                     onToggle={toggleFilter}
@@ -150,18 +161,18 @@ function HomePage() {
           ) : (
             <>
               <div className="mb-3">
-                <h2 className="text-lg font-semibold text-gray-700 font-fredoka">
+                <h2 className="text-lg font-semibold text-gray-700 dark:text-yellow-100 font-fredoka">
                   Bond Matrix
                 </h2>
                 {hasEnoughNamesToFilter && (
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-400 dark:text-yellow-300/60 mt-0.5">
                     {data.names.length}×{data.names.length} grid ·{' '}
                     {data.names.length * (data.names.length - 1)} bonds tracked
                   </p>
                 )}
               </div>
               {hasEnoughNamesToFilter && (
-                <div className="mb-3 bg-white/60 rounded-xl px-3 py-2 border border-gray-100">
+                <div className="mb-3 bg-white/60 dark:bg-white/5 rounded-xl px-3 py-2 border border-gray-100 dark:border-white/10">
                   <BondFilter
                     activeFilters={activeFilters}
                     onToggle={toggleFilter}
@@ -170,7 +181,7 @@ function HomePage() {
                   />
                 </div>
               )}
-              <div className="mb-3 text-xs font-semibold text-gray-400">
+              <div className="mb-3 text-xs font-semibold text-gray-400 dark:text-yellow-300/50">
                 <span>Click to cycle OR Long-press to pick</span>
               </div>
               <BondMatrix
@@ -186,12 +197,16 @@ function HomePage() {
         {/* Desktop sidebar — always visible, in-flow (not fixed), so it never
             interferes with the ConfirmDialog's fixed positioning. */}
         {!isMobile && (
-          <aside className="flex-shrink-0 w-72 lg:w-80 border-l border-gray-100 bg-white/40">
+          <aside
+            className="flex-shrink-0 w-72 lg:w-80
+            border-l border-gray-100 dark:border-white/10
+            bg-white/40 dark:bg-black/30"
+          >
             <div
               className="sticky top-14 overflow-y-auto p-4"
               style={{ maxHeight: 'calc(100vh - 56px)' }}
             >
-              <h2 className="text-base font-semibold text-gray-600 mb-4 flex items-center gap-2 font-fredoka">
+              <h2 className="text-base font-semibold text-gray-600 dark:text-yellow-200 mb-4 flex items-center gap-2 font-fredoka">
                 <span>👥</span> Manage Miis
               </h2>
               <NamePanel
@@ -210,7 +225,7 @@ function HomePage() {
           <>
             {mobilePanelOpen && (
               <div
-                className="fixed inset-0 bg-black/20 z-40 backdrop-blur-sm"
+                className="fixed inset-0 bg-black/20 dark:bg-black/50 z-40 backdrop-blur-sm"
                 onClick={() => setMobilePanelOpen(false)}
               />
             )}
@@ -218,22 +233,22 @@ function HomePage() {
               ref={sidebarRef}
               className={`
                 fixed top-0 right-0 h-full w-72 z-50
+                bg-[#fef9f0] dark:bg-[#161200]
                 transition-transform duration-300 ease-out
                 ${mobilePanelOpen ? 'translate-x-0' : 'translate-x-full'}
               `}
-              style={{ background: '#fef9f0' }}
             >
               <div
                 className="overflow-y-auto p-4"
                 style={{ height: '100%', paddingTop: '70px' }}
               >
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-base font-semibold text-gray-700 font-fredoka">
+                  <h2 className="text-base font-semibold text-gray-700 dark:text-yellow-200 font-fredoka">
                     Manage Miis
                   </h2>
                   <button
                     onClick={() => setMobilePanelOpen(false)}
-                    className="text-gray-400 hover:text-gray-600 text-xl p-1 rounded-lg hover:bg-gray-100"
+                    className="text-gray-400 hover:text-gray-600 dark:text-yellow-400 dark:hover:text-yellow-200 text-xl p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-yellow-900/40"
                     aria-label="Close panel"
                   >
                     ✕

@@ -14,12 +14,10 @@ export default function ConfirmDialog({
   const cancelRef = useRef<HTMLButtonElement>(null)
   const confirmRef = useRef<HTMLButtonElement>(null)
 
-  // Focus "Cancel" on mount (safe default)
   useEffect(() => {
     cancelRef.current?.focus()
   }, [])
 
-  // ESC closes
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onCancel()
@@ -28,7 +26,6 @@ export default function ConfirmDialog({
     return () => window.removeEventListener('keydown', handler)
   }, [onCancel])
 
-  // Trap focus between Cancel and Remove
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== 'Tab') return
     const focusable = [cancelRef.current, confirmRef.current].filter(
@@ -46,10 +43,9 @@ export default function ConfirmDialog({
   }
 
   return (
-    /* Backdrop — rendered at page level so transform stacking context never clips it */
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center px-4"
-      style={{ background: 'rgba(0,0,0,0.45)' }}
+      style={{ background: 'rgba(0,0,0,0.55)' }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onCancel()
       }}
@@ -59,41 +55,41 @@ export default function ConfirmDialog({
       aria-labelledby="confirm-title"
       aria-describedby="confirm-desc"
     >
-      {/* Dialog card — dialogPop keyframe lives in styles.css */}
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden"
+        className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden
+          border border-transparent dark:border-white/10"
         style={{ animation: 'dialogPop 0.18s cubic-bezier(0.34,1.56,0.64,1)' }}
       >
-        {/* Header stripe */}
         <div className="h-1.5 w-full bg-gradient-to-r from-red-400 to-rose-500" />
 
         <div className="p-6">
-          {/* Icon + title */}
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <span className="text-red-500 text-base">✕</span>
+            <div className="w-9 h-9 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <span className="text-red-500 dark:text-red-400 text-base">
+                ✕
+              </span>
             </div>
             <div>
               <h2
                 id="confirm-title"
-                className="font-fredoka text-base font-bold text-gray-800 leading-snug"
+                className="font-fredoka text-base font-bold text-gray-800 dark:text-gray-100 leading-snug"
               >
                 Remove &ldquo;{name}&rdquo;?
               </h2>
             </div>
           </div>
 
-          {/* Required spec message */}
           <p
             id="confirm-desc"
-            className="text-sm text-gray-600 leading-relaxed mb-6 pl-12"
+            className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 pl-12"
           >
             Are you sure you want to remove{' '}
-            <span className="font-semibold text-gray-800">{name}</span>? This
-            will delete all their bond data.
+            <span className="font-semibold text-gray-800 dark:text-gray-100">
+              {name}
+            </span>
+            ? This will delete all their bond data.
           </p>
 
-          {/* Actions */}
           <div className="flex gap-2 justify-end">
             <button
               ref={cancelRef}
@@ -113,11 +109,10 @@ export default function ConfirmDialog({
                 fontFamily: 'Nunito',
               }}
               onMouseEnter={(e) => {
-                ;(e.currentTarget as HTMLButtonElement).style.filter =
-                  'brightness(1.08)'
+                e.currentTarget.style.filter = 'brightness(1.08)'
               }}
               onMouseLeave={(e) => {
-                ;(e.currentTarget as HTMLButtonElement).style.filter = ''
+                e.currentTarget.style.filter = ''
               }}
             >
               Remove

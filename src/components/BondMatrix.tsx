@@ -6,7 +6,6 @@ interface BondMatrixProps {
   data: BondData
   onCycleBond: (from: string, to: string) => void
   onSetBond: (from: string, to: string, level: BondLevel) => void
-  // Empty set means no filter (show all). Non-empty means show only matching levels.
   activeFilters: Set<BondLevel>
 }
 
@@ -24,7 +23,6 @@ export default function BondMatrix({
   activeFilters,
 }: BondMatrixProps) {
   const { names, bonds } = data
-  // Track both directions of a bond change so the mirrored cell also animates.
   const [changedCells, setChangedCells] = useState<Set<string>>(new Set())
   const [picker, setPicker] = useState<PickerState | null>(null)
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -44,16 +42,9 @@ export default function BondMatrix({
     to: string,
     e: React.MouseEvent | React.TouchEvent,
   ) => {
-    // Capture rect immediately — SyntheticEvent.currentTarget becomes null
-    // after the event handler returns (React event pooling).
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
     longPressTimer.current = setTimeout(() => {
-      setPicker({
-        from,
-        to,
-        x: rect.left + rect.width / 2,
-        y: rect.top - 8,
-      })
+      setPicker({ from, to, x: rect.left + rect.width / 2, y: rect.top - 8 })
     }, 400)
   }
 
@@ -65,10 +56,10 @@ export default function BondMatrix({
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="text-6xl mb-4">👤</div>
-        <h3 className="text-xl font-semibold text-gray-500 mb-2 font-fredoka">
+        <h3 className="text-xl font-semibold text-gray-500 dark:text-yellow-300/70 mb-2 font-fredoka">
           No names yet!
         </h3>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-400 dark:text-yellow-200/40">
           Add Miis in the panel to get started.
         </p>
       </div>
@@ -79,10 +70,10 @@ export default function BondMatrix({
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
         <div className="text-6xl mb-4">🫧</div>
-        <h3 className="text-xl font-semibold text-gray-500 mb-2 font-fredoka">
+        <h3 className="text-xl font-semibold text-gray-500 dark:text-yellow-300/70 mb-2 font-fredoka">
           Add one more Mii!
         </h3>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-gray-400 dark:text-yellow-200/40">
           You need at least 2 Miis to track bonds.
         </p>
       </div>
@@ -94,7 +85,7 @@ export default function BondMatrix({
 
   return (
     <div className="relative">
-      {/* Bond picker overlay */}
+      {/* Long-press picker overlay */}
       {picker && (
         <div
           className="fixed inset-0 z-50"
@@ -102,7 +93,7 @@ export default function BondMatrix({
           onTouchStart={() => setPicker(null)}
         >
           <div
-            className="absolute bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 grid grid-cols-3 gap-2"
+            className="absolute bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-white/10 p-2 grid grid-cols-3 gap-2"
             style={{
               left: Math.min(picker.x - 80, window.innerWidth - 168),
               top: Math.max(picker.y - 8, 8),
@@ -112,15 +103,14 @@ export default function BondMatrix({
           >
             {ALL_BOND_LEVELS.map((level) => {
               const cfg = BOND_CONFIG[level]
-              const isCurrent =
-                (bonds[picker.from]?.[picker.to] ?? 0) === level
+              const isCurrent = (bonds[picker.from][picker.to] ?? 0) === level
               return (
                 <button
                   key={level}
                   className={`
                     flex flex-col items-center justify-center w-10 h-10 rounded-xl
                     bond-cell-${level} transition-all ${cfg.textClass}
-                    ${isCurrent ? 'ring-1 ring-offset-1 ring-gray-600 scale-105' : 'hover:scale-105'}
+                    ${isCurrent ? 'ring-1 ring-offset-1 ring-gray-600 dark:ring-offset-gray-900 scale-105' : 'hover:scale-105'}
                   `}
                   title={cfg.label}
                   aria-label={`Set bond to ${cfg.label}`}
@@ -141,24 +131,20 @@ export default function BondMatrix({
         </div>
       )}
 
-      {/* Matrix scroll container */}
       <div className="matrix-scroll">
         <table className="matrix-table">
           <thead>
             <tr>
-              {/* Corner cell */}
               <th
                 className="corner-cell"
                 style={{ minWidth: ROW_HEADER_W, width: ROW_HEADER_W }}
               >
                 <div className="flex items-end justify-end h-20 pb-2 pr-3">
-                  <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wide">
+                  <span className="text-[10px] text-gray-400 dark:text-yellow-300/50 font-semibold uppercase tracking-wide">
                     From ↓ To →
                   </span>
                 </div>
               </th>
-
-              {/* Column headers */}
               {names.map((name) => (
                 <th
                   key={name}
@@ -182,9 +168,8 @@ export default function BondMatrix({
           <tbody>
             {names.map((fromName) => (
               <tr key={fromName}>
-                {/* Row header */}
                 <td
-                  className="row-header border-t border-gray-100"
+                  className="row-header border-t border-gray-100 dark:border-white/10"
                   style={{ minWidth: ROW_HEADER_W, width: ROW_HEADER_W }}
                 >
                   <div
@@ -192,7 +177,7 @@ export default function BondMatrix({
                     style={{ height: CELL_SIZE }}
                   >
                     <span
-                      className="text-sm font-semibold text-gray-700 truncate max-w-[110px]"
+                      className="text-sm font-semibold text-gray-700 dark:text-yellow-100/80 truncate max-w-[110px]"
                       title={fromName}
                     >
                       {fromName}
@@ -200,19 +185,18 @@ export default function BondMatrix({
                   </div>
                 </td>
 
-                {/* Bond cells */}
                 {names.map((toName) => {
                   const isDiagonal = fromName === toName
                   const level = isDiagonal
                     ? null
-                    : ((bonds[fromName]?.[toName] ?? 0) as BondLevel)
+                    : (bonds[fromName][toName] ?? 0)
                   const cfg = level !== null ? BOND_CONFIG[level] : null
                   const cellKey = `${fromName}→${toName}`
 
                   return (
                     <td
                       key={toName}
-                      className="border-t border-l border-gray-100"
+                      className="border-t border-l border-gray-100 dark:border-white/10"
                       style={{
                         width: CELL_SIZE,
                         minWidth: CELL_SIZE,
@@ -222,10 +206,12 @@ export default function BondMatrix({
                     >
                       {isDiagonal ? (
                         <div
-                          className="flex items-center justify-center w-full h-full bg-gray-50"
+                          className="flex items-center justify-center w-full h-full bg-gray-50 dark:bg-black/30"
                           style={{ width: CELL_SIZE, height: CELL_SIZE }}
                         >
-                          <span className="text-gray-300 text-xs">—</span>
+                          <span className="text-gray-300 dark:text-white/20 text-xs">
+                            —
+                          </span>
                         </div>
                       ) : (
                         <div className="relative group">
@@ -235,12 +221,7 @@ export default function BondMatrix({
                               flex items-center justify-center
                               text-sm font-bold select-none
                               ${changedCells.has(cellKey) ? 'just-changed' : ''}
-                              ${
-                                activeFilters.size > 0 &&
-                                !activeFilters.has(level as BondLevel)
-                                  ? 'opacity-20 saturate-0'
-                                  : ''
-                              }
+                              ${activeFilters.size > 0 && !activeFilters.has(level as BondLevel) ? 'opacity-20 saturate-0' : ''}
                             `}
                             style={{ width: CELL_SIZE, height: CELL_SIZE }}
                             onClick={() => handleCellClick(fromName, toName)}

@@ -3,7 +3,9 @@ import { ALL_BOND_LEVELS, BOND_CONFIG } from '@/lib/types'
 export default function BondLegend() {
   return (
     <div className="flex flex-wrap gap-2 items-center">
-      <span className="text-sm font-semibold">Legend: </span>
+      <span className="text-sm font-semibold text-gray-700 dark:text-yellow-100/80">
+        Legend:{' '}
+      </span>
       {ALL_BOND_LEVELS.map((level) => {
         const cfg = BOND_CONFIG[level]
         return (
