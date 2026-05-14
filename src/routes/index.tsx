@@ -64,7 +64,7 @@ function HomePage() {
 
   // ── Render ───────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen page-bg">
+    <div className="min-h-screen page-bg flex flex-col">
       {/* ConfirmDialog is rendered at the page root — outside any sidebar
           element with a CSS transform — so position:fixed covers the full
           viewport and is never clipped by a transform stacking context. */}
@@ -138,7 +138,7 @@ function HomePage() {
       </div>
 
       {/* ── Page body ───────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto flex relative">
+      <div className="max-w-7xl mx-auto flex relative flex-1 w-full">
         <main className="flex-1 p-4 min-w-0">
           {isMobile ? (
             <>
