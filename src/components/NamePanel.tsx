@@ -17,7 +17,7 @@ export default function NamePanel({
   onRemoveName,
   onEditName,
   onImport,
-}: NamePanelProps) {
+}: Readonly<NamePanelProps>) {
   const [input, setInput] = useState('')
   const [editingName, setEditingName] = useState<string | null>(null)
   const [editValue, setEditValue] = useState('')
@@ -123,7 +123,7 @@ export default function NamePanel({
             disabled={names.length >= MAX_NAMES}
           />
           <button
-            className="btn-primary flex-shrink-0"
+            className="btn-primary shrink-0"
             onClick={handleAdd}
             disabled={names.length >= MAX_NAMES || !input.trim()}
             style={{ opacity: names.length >= MAX_NAMES ? 0.5 : 1 }}

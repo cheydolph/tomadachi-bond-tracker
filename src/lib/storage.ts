@@ -97,7 +97,7 @@ function migrateToSymmetricBonds(data: BondData): {
   // Deep-clone bonds so we never mutate the input.
   const fixed: Record<string, Record<string, BondLevel>> = {}
   for (const name of names) {
-    fixed[name] = { ...(bonds[name] ?? {}) }
+    fixed[name] = { ...bonds[name] }
   }
 
   // Iterate each unique ordered pair (i < j).

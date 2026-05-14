@@ -10,7 +10,7 @@ export default function ConfirmDialog({
   name,
   onConfirm,
   onCancel,
-}: ConfirmDialogProps) {
+}: Readonly<ConfirmDialogProps>) {
   const cancelRef = useRef<HTMLButtonElement>(null)
   const confirmRef = useRef<HTMLButtonElement>(null)
 
@@ -22,8 +22,8 @@ export default function ConfirmDialog({
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onCancel()
     }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
+    globalThis.addEventListener('keydown', handler)
+    return () => globalThis.removeEventListener('keydown', handler)
   }, [onCancel])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -44,7 +44,7 @@ export default function ConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center px-4"
+      className="fixed inset-0 z-200 flex items-center justify-center px-4"
       style={{ background: 'rgba(0,0,0,0.55)' }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onCancel()
@@ -60,11 +60,11 @@ export default function ConfirmDialog({
           border border-transparent dark:border-white/10"
         style={{ animation: 'dialogPop 0.18s cubic-bezier(0.34,1.56,0.64,1)' }}
       >
-        <div className="h-1.5 w-full bg-gradient-to-r from-red-400 to-rose-500" />
+        <div className="h-1.5 w-full bg-linear-to-r from-red-400 to-rose-500" />
 
         <div className="p-6">
           <div className="flex items-start gap-3 mb-3">
-            <div className="w-9 h-9 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <div className="w-9 h-9 rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center shrink-0 mt-0.5">
               <span className="text-red-500 dark:text-red-400 text-base">
                 ✕
               </span>
@@ -87,7 +87,7 @@ export default function ConfirmDialog({
             <span className="font-semibold text-gray-800 dark:text-gray-100">
               {name}
             </span>
-            ? This will delete all their bond data.
+            {''}? This will delete all their bond data.
           </p>
 
           <div className="flex gap-2 justify-end">

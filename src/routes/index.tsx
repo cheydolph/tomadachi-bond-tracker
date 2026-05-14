@@ -83,8 +83,8 @@ function HomePage() {
         backdrop-blur-md border-b border-gray-100 dark:border-yellow-900/40
         shadow-sm"
       >
-        <div className="max-w-screen-xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
-          <div className="flex items-center flex-shrink-0 ring-2 ring-offset-0 ring-yellow-300 dark:ring-yellow-900 rounded-xl">
+        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between gap-2">
+          <div className="flex items-center shrink-0 ring-2 ring-offset-0 ring-yellow-300 dark:ring-yellow-900 rounded-xl">
             <img
               src="/tdbt_banner.png"
               alt="Tomadachi Bond Tracker"
@@ -99,7 +99,7 @@ function HomePage() {
             />
           </div>
 
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             {data.names.length > 0 && (
               <span
                 className="hidden sm:flex items-center gap-1 text-base
@@ -138,7 +138,7 @@ function HomePage() {
       </div>
 
       {/* ── Page body ───────────────────────────────────────────────────── */}
-      <div className="max-w-screen-xl mx-auto flex relative">
+      <div className="max-w-7xl mx-auto flex relative">
         <main className="flex-1 p-4 min-w-0">
           {isMobile ? (
             <>
@@ -198,7 +198,7 @@ function HomePage() {
             interferes with the ConfirmDialog's fixed positioning. */}
         {!isMobile && (
           <aside
-            className="flex-shrink-0 w-72 lg:w-80
+            className="shrink-0 w-72 lg:w-80
             border-l border-gray-100 dark:border-white/10
             bg-white/40 dark:bg-black/30"
           >

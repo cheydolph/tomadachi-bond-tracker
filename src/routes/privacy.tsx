@@ -38,7 +38,7 @@ function PrivacyPage() {
             terms, please do not use this application.
           </p>
           <p className="text-xs">
-            If you have any questions or concerns, please contact me at:&nbsp;
+            If you have any questions or concerns, please contact me at:{' '}
             <a className="text-blue-700" href="mailto:roboagain@protonmail.com">
               roboagain@protonmail.com&nbsp;.
             </a>
@@ -97,7 +97,7 @@ function PrivacyPage() {
                 >
                   Google&apos;s Privacy Policy
                 </a>
-                . No other third-party services are used.
+                {''}. No other third-party services are used.
               </p>
             </section>
 

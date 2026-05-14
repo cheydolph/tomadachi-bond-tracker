@@ -69,7 +69,6 @@ Everything derives from `lib/types.ts`. To add another Bond type:
 
 ---
 
-
 ## Running locally
 
 ```bash
@@ -77,7 +76,7 @@ npm install
 npm run dev
 ```
 
-# Building For Production
+## Building For Production
 
 To build this application for production:
 
@@ -126,7 +125,7 @@ This project uses the Cloudflare Vite plugin (configured in `vite.config.ts`) an
 
 For production env vars, run `wrangler secret put MY_VAR` for each secret listed in `.env.example`. Public (non-secret) vars go in `wrangler.jsonc` under `vars`.
 
-KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see https://developers.cloudflare.com/workers/wrangler/configuration/.
+KV, D1, R2, and Durable Object bindings are configured in `wrangler.jsonc` — see <https://developers.cloudflare.com/workers/wrangler/configuration/>.
 
 ## Routing
 

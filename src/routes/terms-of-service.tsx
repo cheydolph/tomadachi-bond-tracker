@@ -46,7 +46,7 @@ function TermsOfServicePage() {
               </p>
               <p>
                 If you have any questions or concerns, please contact me
-                at:&nbsp;
+                at:{' '}
                 <a
                   className="text-blue-700"
                   href="mailto:roboagain@protonmail.com"

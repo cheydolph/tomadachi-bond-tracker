@@ -6,7 +6,7 @@ export default function Footer() {
       className="w-full border-t border-gray-100 mt-12"
       style={{ background: '#ffef00' }}
     >
-      <div className="max-w-screen-xl mx-auto px-4 py-6 flex flex-col items-center gap-3 text-center">
+      <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col items-center gap-3 text-center">
         <p className="text-xs text-gray-400 font-semibold">
           Tomadachi Bond Tracker is not affiliated with Nintendo.
         </p>

@@ -14,7 +14,7 @@ export default function MobileView({
   data,
   onSetBond,
   activeFilters,
-}: MobileViewProps) {
+}: Readonly<MobileViewProps>) {
   const { names, bonds } = data
   const [activePerson, setActivePerson] = useState<PersonSelection>(null)
   const [openPickerKey, setOpenPickerKey] = useState<string | null>(null)
@@ -107,7 +107,7 @@ export default function MobileView({
         <div className="flex flex-col gap-2">
           <SectionLabel>
             All bonds ({allPairBonds.length} pair
-            {allPairBonds.length !== 1 ? 's' : ''})
+            {allPairBonds.length === 1 ? '' : 's'})
           </SectionLabel>
           {allPairBonds.length === 0 ? (
             <EmptyState
@@ -173,11 +173,11 @@ function PersonButton({
   label,
   isActive,
   onClick,
-}: {
+}: Readonly<{
   label: string
   isActive: boolean
   onClick: () => void
-}) {
+}>) {
   return (
     <button
       onClick={onClick}
@@ -196,7 +196,7 @@ function PersonButton({
   )
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <p className="text-xs font-semibold text-gray-400 dark:text-yellow-300/50 uppercase tracking-wide px-1 font-fredoka">
       {children}
@@ -204,7 +204,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-function EmptyState({ message }: { message: string }) {
+function EmptyState({ message }: Readonly<{ message: string }>) {
   return (
     <div className="text-center py-8 text-gray-400 dark:text-yellow-200/40 text-sm">
       {message}

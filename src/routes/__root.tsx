@@ -53,7 +53,7 @@ export const Route = createRootRoute({
   notFoundComponent: NotFound,
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     // suppressHydrationWarning prevents false hydration errors caused by
     // browser extensions injecting classes onto <html> after server render

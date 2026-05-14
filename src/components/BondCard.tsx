@@ -19,7 +19,7 @@ export default function BondCard({
   isPickerOpen,
   onTogglePicker,
   onSetBond,
-}: BondCardProps) {
+}: Readonly<BondCardProps>) {
   const cfg = BOND_CONFIG[level]
 
   const renderPickerBtn = (lvl: BondLevel) => {
@@ -66,7 +66,7 @@ export default function BondCard({
         </div>
 
         <button
-          className={`bond-cell-${level} min-h-[44px] rounded-xl px-3 py-2 flex items-center gap-1.5 flex-shrink-0`}
+          className={`bond-cell-${level} min-h-[44px] rounded-xl px-3 py-2 flex items-center gap-1.5 shrink-0`}
           onClick={onTogglePicker}
           aria-label={`${displayMode === 'pair' ? `${from} and ${to}` : to}: ${cfg.label}. Tap to change.`}
           aria-expanded={isPickerOpen}

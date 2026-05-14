@@ -21,7 +21,7 @@ export default function BondMatrix({
   onCycleBond,
   onSetBond,
   activeFilters,
-}: BondMatrixProps) {
+}: Readonly<BondMatrixProps>) {
   const { names, bonds } = data
   const [changedCells, setChangedCells] = useState<Set<string>>(new Set())
   const [picker, setPicker] = useState<PickerState | null>(null)
@@ -190,7 +190,7 @@ export default function BondMatrix({
                   const level = isDiagonal
                     ? null
                     : (bonds[fromName][toName] ?? 0)
-                  const cfg = level !== null ? BOND_CONFIG[level] : null
+                  const cfg = level === null ? null : BOND_CONFIG[level]
                   const cellKey = `${fromName}→${toName}`
 
                   return (
