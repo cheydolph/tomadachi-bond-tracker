@@ -4,7 +4,7 @@ A fan-made relationship matrix tool for Tomodachi Life: Living the Dream. Track 
 
 > **Not affiliated with Nintendo.**
 
-Live: [tomadachi-bond-tracker.netlify.app](https://tomadachi-bond-tracker.netlify.app)
+Live: [tomadachi-bond-tracker.com](https://tomadachi-bond-tracker.com)
 
 ---
 
