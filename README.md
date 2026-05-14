@@ -1,8 +1,76 @@
-Welcome to your new TanStack Start app!
+# Tomadachi Bond Tracker
 
-# Getting Started
+A fan-made relationship matrix tool for Tomodachi Life: Living the Dream. Track bonds between your Miis in a fully interactive grid / ordered list — no account, no server, no database. Everything lives in your local browser!
 
-To run this application:
+> **Not affiliated with Nintendo.**
+
+Live: [tomadachi-bond-tracker.netlify.app](https://tomadachi-bond-tracker.netlify.app)
+
+---
+
+## What it does
+
+- Add up to **70 Miis** by name
+- Track the bond level between every pair in a **color-coded matrix** or **filterable list**
+- Click a cell to cycle through levels; long-press (desktop) or tap the badge (mobile) to pick a specific level
+- All bonds are **symmetric** — changing a relationship for one Mii updates it for the other as well!
+- **Filter** the matrix by bond type to focus on a specific relationship tier
+- **Export** your data as JSON and **import** it back later — the file includes a `version` field for forward-compatibility
+- Fully responsive: desktop shows the matrix + sidebar; mobile switches to a card-based view with person and ALL modes
+
+### Bonds
+
+| Level | Name | Color | Symbol |
+| ------- | ------ | ------- | -------- |
+| 0 | Strangers | Gray | ○ |
+| 1 | Acquaintances | Emerald | ◎ |
+| 2 | Friends | Yellow | ★ |
+| 3 | Sweethearts | Pink | ♥ |
+| 4 | Family | Orange | ⌂ |
+| 5 | One-Sided Love | Purple | → |
+| 6 | Exes | Dark Gray | ✖ |
+
+Each level also uses a distinct background pattern (dots, stars, hearts, etc.) for colorblind accessibility.
+
+---
+
+## Data format
+
+All data is stored under the key `tomadachi-data` in `localStorage`. The shape:
+
+```json
+{
+  "version": 1,
+  "names": ["John", "Paul", "George"],
+  "bonds": {
+    "John": { "Paul": 2, "George": 0 },
+    "Paul":   { "John": 2, "George": 1 },
+    "George": { "John": 0, "Paul": 1 }
+  }
+}
+```
+
+Bond values are always integers 0–5. Bonds are always symmetric — `bonds[A][B]` always equals `bonds[B][A]`. On load, the app runs a migration pass that detects and corrects any asymmetric pairs from older exports (resolves by taking the higher of the two values).
+
+Exports are pretty-printed JSON. Imports are validated and sanitized before touching state — invalid files are rejected with an error message.
+
+---
+
+## Adding a new bond
+
+Everything derives from `lib/types.ts`. To add another Bond type:
+
+1. Extend `BondLevel` to include `7`
+2. Add an entry to `BOND_CONFIG` with `label`, `abbr`, `symbol`, `bgClass`, `textClass`, `borderClass`, `hex`, `textHex`, and `pattern`
+3. Add `.bond-cell-6` to `globals.css` with a background color and optional pattern
+4. Add the Tailwind classes used in the new entry to the `safelist` in `tailwind.config.js`
+
+`ALL_BOND_LEVELS`, `cycleBond`, `validateAndSanitizeBondData`, and every component that renders bond levels all derive from `BOND_CONFIG` and `ALL_BOND_LEVELS` — no other files need editing.
+
+---
+
+
+## Running locally
 
 ```bash
 npm install
@@ -202,12 +270,4 @@ function PeopleComponent() {
 
 Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
 
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+---
